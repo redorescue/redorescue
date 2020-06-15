@@ -1,0 +1,11 @@
+php -S 127.0.0.1:80 -t /var/www/html >/tmp/php.log 2>&1 &
+( pwgen -A 4 > /tmp/vncpasswd && x11vnc -bg -forever -quiet -display :0 -passwdfile /tmp/vncpasswd ) &
+nitrogen --restore &
+compton &
+tint2 &
+( sleep 1 && /usr/lib/i386-linux-gnu/xfce4/notifyd/xfce4-notifyd ) &
+nm-applet &
+fdpowermon &
+volti &
+xhost si:localuser:redo &
+( sleep 1 && sudo -u redo chromium --start-maximized --app=http://localhost ) &

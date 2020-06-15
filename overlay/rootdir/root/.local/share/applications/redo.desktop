@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=sudo -u redo chromium --start-maximized --app=http://localhost
+Name=Redo Rescue
+Comment=Backup and recovery
+Categories=Utility;
+Icon=redo-icon
+Keywords=system;backup;restore;
+StartupNotify=false

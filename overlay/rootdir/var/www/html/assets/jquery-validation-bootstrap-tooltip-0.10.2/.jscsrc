@@ -1,0 +1,5 @@
+{
+    "preset": "airbnb",
+    "requireCamelCaseOrUpperCaseIdentifiers": false,
+    "requireDotNotation": false
+}

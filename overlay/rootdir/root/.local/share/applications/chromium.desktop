@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=Web Browser
+Comment=Access the Internet
+Exec=sudo -u redo chromium about:blank
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=emblem-web
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml_xml;application/x-mimearchive;x-scheme-handler/http;x-scheme-handler/https;
+#StartupWMClass=chromium
+StartupNotify=false

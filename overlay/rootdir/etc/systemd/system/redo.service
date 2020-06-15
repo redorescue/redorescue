@@ -1,0 +1,13 @@
+[Unit]
+Description=Redo monitor service
+
+[Service]
+User=root
+Group=root
+Type=simple
+ExecStart=/bin/bash -c 'exec /root/redo-monitor 2>&1 >> /tmp/redo.log'
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

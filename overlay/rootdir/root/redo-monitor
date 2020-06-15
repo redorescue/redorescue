@@ -1,0 +1,16 @@
+#!/bin/bash
+
+CMDFILE=/root/cmd.txt
+INT=3
+
+echo "Redo monitoring service started."
+while :
+do
+	if [ -f $CMDFILE ]; then
+		CMD=$(cat $CMDFILE)
+		rm -f $CMDFILE
+		echo "Executing: $CMD"
+		/bin/bash -c "( $CMD ) 2>&1"
+	fi	
+	sleep $INT;
+done

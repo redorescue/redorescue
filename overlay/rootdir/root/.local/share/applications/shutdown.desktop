@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/sbin/poweroff
+Name=Shutdown
+Comment=Power off system
+Categories=Utility;
+Icon=system-shutdown-symbolic
+Comment=Shutdown
+Keywords=system;shutdown;power;

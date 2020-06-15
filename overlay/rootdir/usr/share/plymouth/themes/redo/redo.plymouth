@@ -1,0 +1,11 @@
+[Plymouth Theme]
+Name=Redo Recovery
+Description=Redo Recovery plymouth theme
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/redo
+ScriptFile=/usr/share/plymouth/themes/redo/redo.script
+
+[script-env-vars]
+example_env_var=example env var value

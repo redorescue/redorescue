@@ -1,0 +1,25 @@
+
+
+                                             --------------------------------
+                                              Hit ESC to return to boot menu
+                                             --------------------------------
+
+                                             * At the  boot  screen,  use the
+                                               UP/DOWN arrows and  ENTER  key
+                                               to select a boot option;  Redo
+                                               also  provides options to test
+                                               and identify your hardware
+
+                                             * Some machines take much longer
+                                               to boot, so be patient if your
+                                               hardware is dated
+                                               
+ * If the display does not work properly with the default boot option, choose
+   the video mode selection option,  and manually set a mode that is known to
+   work with your GPU and monitor
+
+ * Remember that hardware support is limited to that of Debian, and that your
+   hardware must be compatible with Debian in order to work with Redo Rescue
+
+ * Press TAB to edit kernel boot options to address hardware issues or to set
+   configuration options (e.g. force a keyboard map with "setkmap=de")

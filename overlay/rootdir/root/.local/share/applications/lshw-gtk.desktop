@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Hardware lister
+Comment=System hardware information
+Icon=lshw-gtk
+Exec=lshw-gtk
+Terminal=false
+Categories=System;

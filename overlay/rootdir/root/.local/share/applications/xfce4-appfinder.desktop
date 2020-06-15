@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Exec=xfce4-appfinder
+Icon=applications-system
+StartupNotify=false
+Terminal=false
+Type=Application
+Categories=Utility;X-XFCE;
+Name=Application Launcher
+Comment=Program start menu
+NoDisplay=true

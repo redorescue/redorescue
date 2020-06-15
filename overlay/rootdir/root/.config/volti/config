@@ -1,0 +1,22 @@
+[card-0]
+control = Master
+
+[global]
+mixer_show_values = 1
+scale_increment = 5.0
+card_index = 0
+icon_theme = gnome
+scale_show_value = 0
+mixer = alsamixer
+show_tooltip = 1
+notify_position = 0
+keys = 0
+toggle = mute
+mixer_internal = 1
+notify_body = <span font_desc="14" weight="bold">{volume}</span>
+	<small>{card}</small>
+	<small>{mixer}</small>
+keys_backend = xlib
+run_in_terminal = 1
+notify_timeout = 2.0
+show_notify = 0
