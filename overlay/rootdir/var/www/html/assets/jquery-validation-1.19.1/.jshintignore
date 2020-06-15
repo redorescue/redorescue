@@ -1,6 +1,0 @@
-node_modules/
-lib/
-test/qunit/
-dist/
-demo/
-*.min.js
