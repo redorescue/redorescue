@@ -62,7 +62,13 @@ To build an ISO image from within Debian Linux:
 
   1. `git clone https://github.com/redorescue/redorescue.git`
   2. `cd redorescue`
-  3. As privileged user, run `make`
+  3. `sudo ./make`
+
+After building, it's easy to modify a file or install a package without rebuilding and downloading all the packages again:
+
+  1. `sudo ./make changes`
+  1. Make your changes to the live system image
+  1. `exit` and the ISO will be updated automatically
 
 Source code for previous releases can be found on [SourceForge](https://sourceforge.net/projects/redobackup/files/src/).
 
