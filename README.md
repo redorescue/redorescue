@@ -80,7 +80,7 @@ Source code for previous releases can be found on [SourceForge](https://sourcefo
 
 ## Changelog
 
-### Version 2.0.0 (2020-06-11)
+### Version 2.0.0 (2020-06-11) BETA - DO NOT USE IN PRODUCTION!
   * Based on 64-bit Debian stretch
   * More support for modern hardware
   * ISO naming convention changed to simply "redorescue-X.X.X.iso"
