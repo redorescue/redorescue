@@ -24,7 +24,7 @@ The original since 2010&mdash;now with more Github!
   </p>
 </div>
 
-<p align="center"><b>For more screenshots and project details visit http://redorescue.com.</b></p>
+<p align="center"><b>For more screenshots and project details visit http://redorescue.com</b></p>
 
 ## Features
 
