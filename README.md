@@ -51,6 +51,8 @@ The original since 2010&mdash;now with more Github!
 
 ## Download
 
+#### THE LATEST RELEASE IS STILL CONSIDERED BETA. PLEASE TEST BUT DO NOT USE IN PRODUCTION YET!
+
 The latest ISO image can be downloaded from SourceForge:
 
 [![Download Redo Rescue: Backup and Recovery](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/redobackup/files/latest/download)
