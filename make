@@ -262,7 +262,7 @@ echo -e "$yel* Compressing live filesystem...$off"
 mksquashfs $ROOT/ image/live/filesystem.squashfs -e boot
 
 # Create ISO image
-mksquashfs $ROOT/ image/live/filesystem.squashfs -e boot
+echo -e "$yel* Creating ISO image...$off"
 xorriso -as mkisofs -r \
 	-J -joliet-long \
 	-isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \
@@ -277,7 +277,7 @@ xorriso -as mkisofs -r \
 # All done
 echo -e "$yel\nISO image saved:"
 du -sh redorescue-$VER.iso
-echo -e "$off\n"
+echo -e "$off"
 echo
 echo "Done."
 echo
