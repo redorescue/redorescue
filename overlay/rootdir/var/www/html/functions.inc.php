@@ -270,7 +270,7 @@ function mount_drive($vars) {
 		return array('status'=>FALSE, 'error'=>'Unknown mount type');
 		break;
 	}
-	// Confirm drive is mounted and return status array
+	// Confirm drive is mounted and return result in an array
 	$m = trim(shell_exec('mount | grep '.MOUNTPOINT));
 	if (strlen($m)<16) return array('status'=>FALSE, 'error'=>$error);
 	$u = get_usage();
@@ -623,6 +623,32 @@ function restore_init() {
 }
 
 //
+// Initialize verification of a backup image, return any errors
+//
+function verify_init() {
+	global $status;
+	if (empty($status->type)) return FALSE;
+	$status->progress = array(
+		'wait'	=> array_keys( (array) $status->parts ),
+		'exec'	=> array(),
+		'done'	=> array(),
+	);
+	$status->start_time = time();
+	set_status($status);
+	$disks = get_disks();
+	$status->bytes_total = 0;
+	$status->bytes_done = 0;
+	if (sizeof($status->parts)<1) return 'No partitions selected';
+	foreach ($status->parts as $sp=>$tp) {
+		$status->bytes_total += $status->image->parts->$sp->bytes;
+	}
+	$status->logline = 0;
+	set_status($status);
+	shell_exec("truncate -s 0 ".LOG_FILE);
+	return NULL;
+}
+
+//
 // Retrieve backup image information from .redo file
 //
 function get_image_info() {
@@ -721,7 +747,7 @@ function backup_part($dev) {
 	$cmd = "partclone.$fs_tool $fs_mode --force --UI-fresh 1 --logfile ".TMP_DIR."$dev.log ";
 	$cmd .= " --source /dev/$dev --no_block_detail ";
 	$cmd .= " | pigz --stdout --fast ";
-	$cmd .= " | split --numeric-suffixes=1 --suffix-length=2 --additional-suffix=.img --bytes=4096m - ";
+	$cmd .= " | split --numeric-suffixes=1 --suffix-length=3 --additional-suffix=.img --bytes=4096M - ";
 	$cmd .= '"'.sane_path($status->dir).'/'.$status->id.'_'.$dev.'_"';
 	file_put_contents(CMD_FILE, $cmd);
 	return $cmd;
@@ -739,7 +765,7 @@ function restore_part($src, $dst=NULL) {
 	$dst = sane_dev($dst);
 	@unlink(TMP_DIR.$src.'.log');
 	// Prepare command to restore a backup
-	$image_files = preg_replace('/\.redo$/', '', MOUNTPOINT.$status->file).'_'.$src.'_??.img';
+	$image_files = preg_replace('/\.redo$/', '', MOUNTPOINT.$status->file).'_'.$src.'_??*.img';
 	if (!unmount('/dev/'.$dst)) return 'Unable to unmount target partition';
 	// Use of partclone.restore deprecated; use filesystem-specific binary with "--restore"
 	$fs_tool = get_fs_tool($status->image->parts->$src->fs);
@@ -754,6 +780,33 @@ function restore_part($src, $dst=NULL) {
 	$cmd .= " | pigz --decompress --stdout ";
 	$cmd .= " | partclone.$fs_tool --restore --force --UI-fresh 1 ";
 	$cmd .= " --logfile ".TMP_DIR."$src.log --overwrite /dev/$dst --no_block_detail";
+	file_put_contents(CMD_FILE, $cmd);
+	return $cmd;
+}
+
+//
+// Verify the integrity of the given image
+//
+function verify_part($src) {
+	global $status;
+	if (process_running())
+		return('A process is already running!');
+	$src = sane_dev($src);
+	@unlink(TMP_DIR.$src.'.log');
+	// Prepare command to restore a backup
+	$image_files = preg_replace('/\.redo$/', '', MOUNTPOINT.$status->file).'_'.$src.'_??*.img';
+	$fs_tool = 'chkimg';
+	// Is this a legacy backup image? If so, adjust the source file format
+	if (is_legacy($status->image->version)) {
+		// Handle restoring from an old backup image
+		$prefix_path = sane_path(preg_replace('/\.backup$/', '', $status->file));
+		$part_num = preg_replace('/[^0-9]/', '', $src);
+		$image_files = $prefix_path.'_part'.$part_num.'.???';
+	}
+	$cmd = "cat $image_files ";
+	$cmd .= " | pigz --decompress --stdout ";
+	$cmd .= " | partclone.$fs_tool --force --UI-fresh 1 --source - ";
+	$cmd .= " --logfile ".TMP_DIR."$src.log --no_block_detail";
 	file_put_contents(CMD_FILE, $cmd);
 	return $cmd;
 }

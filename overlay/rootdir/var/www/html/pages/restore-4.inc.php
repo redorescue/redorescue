@@ -198,7 +198,6 @@ if (is_string($image)) crash($image, 'restore-3');
 	
 $("#redo_form").submit(function(event) {
 	event.preventDefault();
-	var url = 'action.php?page=restore-progress';
 	var type = $('ul#redo_tabs li.active a').attr('href');
 	var vars = $('#redo_form '+type+' :input').serializeArray();
 	vars.push({ name: 'type', value: type });

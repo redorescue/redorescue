@@ -14,6 +14,13 @@ $status->type = preg_replace('/[^a-z]/', '', $_REQUEST['type']);
 $status->parts = array();
 $error = '';
 switch ($status->type) {
+case 'verify':
+	foreach ($_REQUEST['verify_parts'] as $part) {
+		$part = sane_dev($part);
+		// We don't need to specify a target; use the same device ID
+		$status->parts[$part] = $part;
+	}
+	break;
 case 'baremetal':
 	foreach ($_REQUEST['baremetal_parts'] as $part) {
 		$part = sane_dev($part);
@@ -44,13 +51,13 @@ case 'selective':
 	}
 	break;
 default:
-	$error = 'Invalid restore type requested';
+	$error = 'Invalid operation type requested';
 	break;
 }
 
 // Make sure a partition is selected for restore
 if ( sizeof( (array) $status->parts ) == 0 )
-	if (empty($error)) $error = 'No partitions selected to restore';
+	if (empty($error)) $error = 'No partitions selected';
 
 // Stop if there was an error
 if (!empty($error)) {

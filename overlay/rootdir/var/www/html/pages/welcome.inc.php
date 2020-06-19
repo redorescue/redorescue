@@ -3,23 +3,25 @@
 
 <p>Easily create a snapshot of your system or completely restore from one. Click an option to begin:</p>
 
-<div id="welcome" class="row">
-  <div class="col-xs-6">
-    <div class="text-right">
-      <button onClick="showPage('backup-1');" class="btn btn-lg btn-primary">
-        <p><i class="fas fa-upload fa-4x"></i></p>
-        <div>Backup</div>
-      </button>
-    </div>
-  </div>
-  <div class="col-xs-6">
-    <div class="text-left">
-      <button onClick="showPage('restore-1');" class="btn btn-lg btn-primary">
-        <p><i class="fas fa-download fa-4x"></i></p>
-        <div>Restore</div>
-      </button>
-    </div>
-  </div>
+<div id="welcome">
+  <p class="text-center">
+
+    <button onClick="showPage('backup-1');" class="btn btn-lg btn-info">
+      <p><i class="fas fa-upload fa-4x"></i></p>
+      <div>Backup</div>
+    </button>
+
+    <button onClick="showPage('verify-1');" class="btn btn-lg btn-success">
+      <p><i class="fas fa-check-circle fa-4x"></i></p>
+      <div>Verify</div>
+    </button>
+
+    <button onClick="showPage('restore-1');" class="btn btn-lg btn-danger">
+      <p><i class="fas fa-download fa-4x"></i></p>
+      <div>Restore</div>
+    </button>
+
+  </p>
 </div>
 
 <!-- Load fonts immediately in a hidden container -->

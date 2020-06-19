@@ -23,6 +23,7 @@ case 'backup':
 	break;
 
 case 'restore':
+case 'verify':
 	// Save path of image to restore from
 	$status->file = $_REQUEST['file'];
 	if (!file_exists(sane_path($status->file))) {

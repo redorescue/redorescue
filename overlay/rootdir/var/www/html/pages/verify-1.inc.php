@@ -3,7 +3,7 @@
 $status = get_status();
 
 // Set operation type
-$status->op = 'restore';
+$status->op = 'verify';
 
 // Save status
 unset($status->file);
@@ -16,7 +16,7 @@ $disks = get_disks(TRUE);
 $options = get_part_options($disks, array(), '/iso9660|fat.*|ext\d|ntfs/');
 ?>
 
-<h1>Restore</h1>
+<h1>Verify</h1>
 <h3>Step 1: Select source drive</h3>
 <p>Select the source drive that contains the saved backup image:</p>
 
@@ -41,7 +41,7 @@ $options = get_part_options($disks, array(), '/iso9660|fat.*|ext\d|ntfs/');
 	?>
 	  </select>
 <?php } else { ?>
-          <p class="form-control-static text-muted"><i>There are no available local partitions to restore from.</i></p>
+          <p class="form-control-static text-muted"><i>There are no available local partitions to read from.</i></p>
 <?php } ?>
 	</div>
       </div>
@@ -185,7 +185,7 @@ $("#redo_form").submit(function(event) {
 		r = $.parseJSON(data);
 		if (r['status']) {
 			// Success: Proceed to next page
-			$('#content').load('action.php?page=restore-2');
+			$('#content').load('action.php?page=verify-2');
 		} else {
 			// Failure: Notify user of error
 			bootbox.alert('<h3>Failed to access drive</h3><div class="alert alert-danger"><p><i class="fas fa-exclamation-triangle"></i> <b>Error: ' + r['error'] + '</b></p></div><p>Check your settings and try again.</p>');
