@@ -793,9 +793,8 @@ function verify_part($src) {
 		return('A process is already running!');
 	$src = sane_dev($src);
 	@unlink(TMP_DIR.$src.'.log');
-	// Prepare command to restore a backup
+	// Prepare command to verify a backup
 	$image_files = preg_replace('/\.redo$/', '', MOUNTPOINT.$status->file).'_'.$src.'_??*.img';
-	$fs_tool = 'chkimg';
 	// Is this a legacy backup image? If so, adjust the source file format
 	if (is_legacy($status->image->version)) {
 		// Handle restoring from an old backup image
@@ -805,7 +804,7 @@ function verify_part($src) {
 	}
 	$cmd = "cat $image_files ";
 	$cmd .= " | pigz --decompress --stdout ";
-	$cmd .= " | partclone.$fs_tool --force --UI-fresh 1 --source - ";
+	$cmd .= " | partclone.chkimg --force --UI-fresh 1 --source - ";
 	$cmd .= " --logfile ".TMP_DIR."$src.log --no_block_detail";
 	file_put_contents(CMD_FILE, $cmd);
 	return $cmd;
