@@ -116,6 +116,7 @@ if (sizeof($status->progress->exec) > 0) {
 			beep('done');
 			$return['details'] = "Backup completed successfully in $elapsed.";
 			$return['done'] = "Backup completed successfully in $elapsed.";
+			$return['overall_pct'] = "100";
 		}
 	}
 }

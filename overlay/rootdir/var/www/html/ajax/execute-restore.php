@@ -125,6 +125,7 @@ if (sizeof($status->progress->exec) > 0) {
 			beep('done');
 			$return['details'] = "Restore completed successfully in $elapsed.";
 			$return['done'] = "Restore completed successfully in $elapsed.";
+			$return['overall_pct'] = "100";
 		}
 	}
 }
