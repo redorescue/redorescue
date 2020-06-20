@@ -35,15 +35,15 @@ if (!property_exists($status, 'progress')) {
 }
 
 // Cast parts and progress lists as arrays
-$status->image->parts = (array) $status->image->parts;
+$status->parts = (array) $status->parts;
 foreach ($status->progress as &$x) $x = (array) $x;
 
 // Is a partition currently marked for processing?
 if (sizeof($status->progress->exec) > 0) {
 	// Parse log output
 	$part_name = $status->progress->exec[0];
-	$part_bytes = $status->image->parts[$status->progress->exec[0]]->bytes;
-	$part_count = sizeof($status->image->parts);
+	$part_bytes = $status->image->parts->{$status->progress->exec[0]}->bytes;
+	$part_count = sizeof($status->parts);
 	$part_num = sizeof($status->progress->done) + 1;
 	if ($part_num > $part_count) $part_num = $part_count;
 	$return['part_num'] = $part_num.' of '.$part_count;
@@ -107,7 +107,7 @@ if (sizeof($status->progress->exec) > 0) {
 		$cmd = verify_part($status->progress->exec[0]);
 	} else {
 		// No partitions waiting; see if we're finished
-		if (sizeof($status->progress->done) == sizeof($status->image->parts)) {
+		if (sizeof($status->progress->done) == sizeof($status->parts)) {
 			$secs = time() - $status->start_time;
 			$elapsed = floor($secs/3600).gmdate(":i:s", $secs%3600);
 			$elapsed = preg_replace('/^0+\:/', '', $elapsed);
