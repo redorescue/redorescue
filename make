@@ -53,6 +53,7 @@ fi
 ACTION=$1
 if [ "$ACTION" == "clean" ]; then
 	rm -rf {image,$ROOT,*.iso}
+	echo -e "$yel* All clean!$off\n"
 	exit
 fi
 
