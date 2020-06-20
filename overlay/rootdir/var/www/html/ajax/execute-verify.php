@@ -88,7 +88,7 @@ if (sizeof($status->progress->exec) > 0) {
 		// Return overall progress, if known
 		if ( (sizeof($status->progress->exec) > 0) && (!is_null($part_pct)) ) {
 			$status->bytes_done = 0;
-			foreach ($status->progress->done as $d) $status->bytes_done += $status->image->parts[$d]->bytes;
+			foreach ($status->progress->done as $d) $status->bytes_done += $status->image->parts->$d->bytes;
 			$status->bytes_done += intval(($part_pct/100) * $part_bytes);
 			$overall_pct = round((100 * $status->bytes_done) / $status->bytes_total, 2);
 			$return['overall_pct'] = $overall_pct;
