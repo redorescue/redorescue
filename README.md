@@ -51,7 +51,7 @@ The original since 2010&mdash;now with more Github!
 
 ## Download
 
-#### THE LATEST RELEASE IS STILL CONSIDERED BETA. PLEASE TEST BUT DO NOT USE IN PRODUCTION YET!
+#### The latest 2.0 releases are still considered BETA. Please test, but don't use in production yet!
 
 The latest ISO image can be downloaded from SourceForge:
 
@@ -82,7 +82,15 @@ Source code for previous releases can be found on [SourceForge](https://sourcefo
 
 ## Changelog
 
-### Version 2.0.0 (2020-06-11) BETA - DO NOT USE IN PRODUCTION!
+### Version 2.0.1 (2020-06-19)
+  * Added feature to verify the integrity of a backup image
+  * Fixed bug that caused application to hang when mounting NTFS partitions
+  * Improved make script with colorized output for better readability
+  * Changed image file format to permit triple-digit numeric suffixes
+  * Should now permit a compressed partition image to be up to 4 terabytes
+  * Removed unusued assets that made Dependabot complain
+
+### Version 2.0.0 (2020-06-11)
   * Based on 64-bit Debian stretch
   * More support for modern hardware
   * ISO naming convention changed to simply "redorescue-X.X.X.iso"
