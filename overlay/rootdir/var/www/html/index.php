@@ -47,6 +47,7 @@ define('QR_DATA', 'QSw3KUU5Jl1JPSQsVjxDQSo6JTUzPEcwVTxVOVYxQy06MTRVSiw2TSY+NyRSC
     <link rel="stylesheet" href="/assets/bootstrap-3.4.1/dist/css/bootstrap-custom.min.css">
     <link rel="stylesheet" href="/assets/fontawesome-free-5.12.1-web/css/fontawesome.min.css">
     <link rel="stylesheet" href="/assets/fontawesome-free-5.12.1-web/css/solid.min.css">
+    <link rel="stylesheet" href="/assets/fontawesome-free-5.12.1-web/css/brands.min.css">
     <link rel="stylesheet" href="/assets/animate.css-4.1.0/animate.min.css">
   </head>
   <body>
@@ -67,7 +68,7 @@ define('QR_DATA', 'QSw3KUU5Jl1JPSQsVjxDQSo6JTUzPEcwVTxVOVYxQy06MTRVSiw2TSY+NyRSC
 	    <span class="small text-muted">Version <?php print get_version(); ?></span>
           </div>
 	  <div class="col-xs-6 text-right">
-	    <span class="small"><i class="fas fa-pizza-slice icon-button text-primary" data-toggle="popover" title="Donate" data-content="<div class='small text-center'><img src='/images/qr.php?q=<?php print convert_data(QR_DATA); ?>' width='240' height='240'><br/>BTC: <code><?php print convert_data(QR_DATA); ?></code></div>"></i></span>
+	    <span class="small"><i class="fas fa-pizza-slice icon-button text-primary" data-toggle="popover" title="Donate" data-content="<div class='small text-center'><img src='/images/qr.php?q=<?php print convert_data(QR_DATA); ?>' width='240' height='240'><h4><i class='fab fa-bitcoin text-warning'></i> BTC:</h4><code><?php print convert_data(QR_DATA); ?></code></div>"></i></span>
 	    <span class="small"><i class="fas fa-key icon-button text-primary" data-toggle="popover" title="Remote access" data-content="<span class='small'>You may also connect via VNC to <?php print (empty($status->ip)?'this system':'<b>'.$status->ip.'</b>'); ?> with password <code><?php print trim(file_get_contents(VNCPASS_FILE)); ?></code></span>"></i></span>
           </div>
         </div>
