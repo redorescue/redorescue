@@ -34,8 +34,8 @@ if (is_string($image)) crash($image, 'restore-3');
 <form id="redo_form" class="form-horizontal">
 
   <ul id="redo_tabs" class="nav nav-tabs" style="margin-bottom: 1em;">
-    <li class="active"><a href="#baremetal" data-toggle="tab">Full system recovery <i class="fas fa-info-circle text-info" data-toggle="tooltip" title="Restores backup image even if the target is blank. Master boot record and partition table will be overwritten."></i></a></li>
-    <li><a href="#selective" data-toggle="tab">Restore data only <i class="fas fa-info-circle text-info" data-toggle="tooltip" title="Preserves and does not alter the current partition table or master boot record, writing data only to existing selected partitions."></i></a></li>
+    <li class="active"><a href="#baremetal" data-toggle="tab">Full system recovery <i class="fas fa-info-circle text-info" data-toggle="tooltip" title="Restores backup image even if the target is blank. Master boot record and partition table will be completely overwritten."></i></a></li>
+    <li><a href="#selective" data-toggle="tab">Restore data only <i class="fas fa-info-circle text-info" data-toggle="tooltip" title="Preserves and does not alter the current master boot record or partition table. Only writes data into existing selected partitions."></i></a></li>
   </ul>
   <div id="myTabContent" class="tab-content">
 
