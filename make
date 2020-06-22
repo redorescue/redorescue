@@ -178,7 +178,7 @@ fi
 # Setup script: (UPDATE) Open shell to make changes
 if [ "$ACTION" == "changes" ]; then
 cat >> $ROOT/$FILE << EOL
-echo -e "$yel>>> Opening interactive shell. Type 'exit' when done making changes.$off"
+echo -e "$red>>> Opening interactive shell. Type 'exit' when done making changes.$off"
 echo
 bash
 EOL
