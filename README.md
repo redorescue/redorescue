@@ -58,6 +58,15 @@ The latest ISO image can be downloaded from SourceForge:
 [![Download Redo Rescue: Backup and Recovery](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/redobackup/files/latest/download)
 
 
+## Warning
+
+Backup and recovery solutions all have limitations. **Redo Rescue** relies on [sfdisk](https://manpages.debian.org/stretch/util-linux/sfdisk.8.en.html) to backup and restore partition tables, and [partclone](https://manpages.debian.org/stretch/partclone/partclone.8.en.html) to create and restore backups of the data on each partition. Redo Rescue is designed to restore a backup image to the _same exact hardware_ it was taken from. A quick search for "cloned drive won't boot" should provide ample explanation as to why: Even if the target system is _nearly_ identical, Windows may refuse to boot for reasons that have absolutely nothing to do with the backup solution used.
+
+Certain system changes can easily render a Windows, Mac, or Linux machine unbootable. There is no way to guarantee that a recovered operating system will boot properly if hardware components have been replaced, disks have been added/removed/swapped, significant configuration changes were made, or the image is being restored to a different machine. Similarly, swapping, moving, resizing, or reordering partitions will almost certainly render most operating systems unbootable.
+
+Given the above, an entire backup can be restored successfully, yet the operating system might fail to boot if the system configuration has changed in certain ways. In these situations all files and data are safely recovered (and can be copied to another system) but the system will not boot. _This is not a limitation of the backup solution, but the result of changes to the configuration._ A quick glance at forums for the leading commercial recovery solutions will quickly illustrate the difficulty these changes present, particularly with Microsoft Windows. For the foregoing reasons, Redo Rescue is unable to provide support for resolving boot failures that result from changes made since a backup image was created.
+
+
 ## Build
 
 To build an ISO image from within Debian Linux:

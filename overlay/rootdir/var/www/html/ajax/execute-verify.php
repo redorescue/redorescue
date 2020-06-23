@@ -114,7 +114,7 @@ if (sizeof($status->progress->exec) > 0) {
 			beep('done');
 			$return['details'] = "Verification completed successfully in $elapsed.";
 			$return['done'] = "Verification completed successfully in $elapsed.";
-			$return['overall_pct'] = "100";
+			$return['overall_pct'] = "100.00";
 		}
 	}
 }
