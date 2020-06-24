@@ -235,16 +235,16 @@ function mount_drive($vars) {
 		set_status($status);
 		break;
 	case 'cifs':
-		$loc = trim(preg_replace('/\\\+|\/+/', ' ', $vars['cifs_location']));
-		list($host, $path) = explode(' ', $loc);
+		$loc = trim(preg_replace('/\\\+|\/+/', '|', $vars['cifs_location']));
+		list($host, $path) = explode('|', trim($loc, '|'));
 		$host = preg_replace('/[^a-zA-Z0-9\.\-\_]/', '', $host);
-		$path = preg_replace('/[^a-zA-Z0-9\.\-\_]/', '', $path);
+		$path = preg_replace('/[^a-zA-Z0-9\.\-\_ ]/', '', $path);
 		$domain = preg_replace('/[^a-zA-Z0-9\.\-\_]/', '', $vars['cifs_domain']);
-		$cmd = "mount.cifs //$host/$path ".MOUNTPOINT." -o";
+		$cmd = "mount.cifs '//$host/$path' ".MOUNTPOINT." -o";
 		if (empty($user) && empty($pass)) $cmd .= " guest";
 		if (!empty($domain)) $cmd .= " dom=$domain";
 		if (!empty($user)) $cmd .= " user=$user";
-		if (!empty($pass)) $cmd .= " pass=$pass";
+		if (!empty($pass)) $cmd .= " pass='$pass'";
 		$error = shell_exec(escapeshellcmd($cmd).' 2>&1');
 		break;
 	case 'ssh':
@@ -294,7 +294,15 @@ function get_usage() {
 	$free_bytes = intval(trim(shell_exec('df --block-size=1 --output=avail '.MOUNTPOINT.' | sed 1d')));
 	$df = trim(shell_exec('df -HT '.MOUNTPOINT.' | grep '.MOUNTPOINT));
 	$df = preg_replace('/ +/', ' ', $df);
-	list($dev, $fs, $size, $used, $free, $pct, $mnt) = explode(' ', $df);
+	$list = explode(' ', $df);
+	if (sizeof($list) > 7) {
+		// The mounted device has a space in its name, and output
+		// from `df` uses single spaces as delimiters. Nice!
+		$d1 = array_shift($list);
+		$d2 = array_shift($list);
+		array_unshift($list, trim($d1).' '.trim($d2));
+	}
+	list($dev, $fs, $size, $used, $free, $pct, $mnt) = $list;
 	if (preg_match('/\%/', $pct)) return array(
 		'dev'   => $dev,
 		'fs'    => $fs,
