@@ -424,8 +424,8 @@ function search_network_shares() {
 	$sharedata = explode(PHP_EOL, trim(shell_exec("smbtree -N")));
 	foreach ($sharedata as $sd) {
 		if (preg_match('/^(\w*)$/', $sd)) $domain = trim($sd);
-	        $matches = array();
-	        if (preg_match('/\\\\\\\(\w*)\\\\(\w*)  */', $sd, $matches)) {
+		$matches = array();
+	        if (preg_match('/\\\\\\\(\w*)\\\\(\w| )*  */', $sd, $matches)) {
 	                list($location, $host, $path) = $matches;
 			$sharelist[] = array(
 				'domain'	=> trim($domain),
