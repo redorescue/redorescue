@@ -76,8 +76,10 @@ if (sizeof($status->progress->exec) > 0) {
 		}
 		if (preg_match('/ERROR/i', $l))
 			ajax_abort($l);
-		if (preg_match('/Input\/output error/', $l))
-			ajax_abort('Error reading backup image');
+		if (preg_match('/Input\/output error/i', $l))
+			ajax_abort('Error reading data; make sure drive is still accessible');
+		if (preg_match('/broken pipe/i', $l))
+			ajax_abort('Error reading image; source drive may have disconnected');
 		if (preg_match('/^Checked successfully\.$/', $l)) {
 			$return['details'] = "Finished verifying $part_name";
 			$part_pct = 100;

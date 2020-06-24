@@ -78,8 +78,10 @@ if (sizeof($status->progress->exec) > 0) {
 		}
 		if (preg_match('/ERROR/i', $l))
 			$return['details'] = $l;
-		if (preg_match('/Input\/output error/', $l))
-			ajax_abort('Error writing data to destination');
+		if (preg_match('/Input\/output error/i', $l))
+			ajax_abort('Error reading or writing data; make sure drive is still accessible');
+		if (preg_match('/broken pipe/i', $l))
+			ajax_abort('Error saving backup; target drive may have disconnected');
 		if (preg_match('/^Cloned successfully\.$/', $l)) {
 			$return['details'] = "Finished imaging $part_name";
 			$part_pct = 100;

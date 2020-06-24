@@ -83,8 +83,10 @@ if (sizeof($status->progress->exec) > 0) {
 			ajax_abort('The target partition is too small');
 		if (preg_match('/abort|No space left on device/', $l))
 			ajax_abort('No space left on device or target partition does not exist');
-		if (preg_match('/Input\/output error/', $l))
-			ajax_abort('Error writing data to destination');
+		if (preg_match('/Input\/output error/i', $l))
+			ajax_abort('Error reading or writing data; make sure drive is still accessible');
+		if (preg_match('/broken pipe/i', $l))
+			ajax_abort('Error reading image; source drive may have disconnected');
 		if (preg_match('/^This is not partclone image/', $l))
 			ajax_abort('Invalid or corrupted partition image');
 		if (preg_match('/^Cloned successfully\.$/', $l)) {
