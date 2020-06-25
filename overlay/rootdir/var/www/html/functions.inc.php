@@ -227,9 +227,8 @@ function mount_drive($vars) {
 	switch ($vars['type']) {
 	case 'local':
 		$dev = preg_replace('/[^a-z0-9]/', '', $vars['local_part']);
-		$cmd = 'mount /dev/'.$dev.' '.MOUNTPOINT.' 2>&1';
-		file_put_contents(CMD_FILE, $cmd);
-		sleep(2);
+		$cmd = 'mount /dev/'.$dev.' '.MOUNTPOINT;
+		$error = shell_exec($cmd.' 2>&1');
 		$status = get_status();
 		$status->source = $dev;
 		set_status($status);

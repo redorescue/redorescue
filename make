@@ -139,7 +139,7 @@ apt install --no-install-recommends --yes \
 	lshw-gtk testdisk curlftpfs nmap cifs-utils time openssh-client \
 	rsync reiserfsprogs dosfstools ntfs-3g hfsutils reiser4progs sshfs \
 	jfsutils smbclient wget partclone iputils-ping net-tools yad pigz \
-	chromium php-cli iptables-persistent
+	nginx php-fpm chromium php-cli iptables-persistent
 
 # System settings
 perl -p -i -e 's/^set compatible$/set nocompatible/g' /etc/vim/vimrc.tiny
@@ -166,6 +166,28 @@ echo "Setting default plymouth theme..."
 plymouth-set-default-theme -R redo
 update-initramfs -u
 ln -s /usr/bin/pcmanfm /usr/bin/nautilus
+
+# Configure nginx/php-fpm application server
+perl -p -i -e 's/^user = .*$/user = root/g' /etc/php/7.0/fpm/pool.d/www.conf
+perl -p -i -e 's/^group = .*$/group = root/g' /etc/php/7.0/fpm/pool.d/www.conf
+perl -p -i -e 's/^ExecStart=(.*)$/ExecStart=\$1 -R/g' /lib/systemd/system/php7.0-fpm.service
+systemctl daemon-reload
+cat > /etc/nginx/sites-available/redo <<'END'
+server {
+	listen		80 default_server;
+	server_name	localhost;
+	root		/var/www/html;
+	index		index.php;
+	location ~* \.php$ {
+		fastcgi_pass	unix:/run/php/php7.0-fpm.sock;
+		include		fastcgi_params;
+		fastcgi_param	SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+		fastcgi_param	SCRIPT_NAME \$fastcgi_script_name;
+	}
+}
+END
+rm -f /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/redo /etc/nginx/sites-enabled/
 
 # Save space
 rm -f /usr/bin/{rpcclient,smbcacls,smbclient,smbcquotas,smbget,smbspool,smbtar}
