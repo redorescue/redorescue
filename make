@@ -17,7 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-VER=2.0.2
+VER=2.0.3
 BASE=stretch
 ARCH=amd64
 ROOT=rootdir
