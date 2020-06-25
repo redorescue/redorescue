@@ -92,6 +92,8 @@ Source code for previous releases can be found on [SourceForge](https://sourcefo
 ### Version 2.0.2 (2020-06-25)
   * Prevent application from hanging when mounting certain partition types
   * Moved to nginx for application web server to resolve mount issues
+  * Support network shared folders that have a space in the share name
+  * Quote passwords provided for SMB mounts
   * More user friendly descriptions on tabs of restore options
   * Added prominent warning regarding remapping to selective restore tab
   * Fixed several minor user interface quirks
