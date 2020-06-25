@@ -89,6 +89,13 @@ Source code for previous releases can be found on [SourceForge](https://sourcefo
 
 ## Changelog
 
+### Version 2.0.2 (2020-06-25)
+  * Prevent application from hanging when mounting certain partition types
+  * Moved to nginx for application web server to resolve mount issues
+  * More user friendly descriptions on tabs of restore options
+  * Added prominent warning regarding remapping to selective restore tab
+  * Fixed several minor user interface quirks
+
 ### Version 2.0.1 (2020-06-19)
   * Added feature to verify the integrity of a backup image
   * Fixed bug that caused application to hang when mounting NTFS partitions
