@@ -227,8 +227,8 @@ function mount_drive($vars) {
 	switch ($vars['type']) {
 	case 'local':
 		$dev = preg_replace('/[^a-z0-9]/', '', $vars['local_part']);
-		$cmd = 'mount /dev/'.$dev.' '.MOUNTPOINT;
-		$error = shell_exec($cmd.' 2>&1');
+		$cmd = 'mount /dev/'.$dev.' '.MOUNTPOINT.' 2>&1';
+		$error = shell_exec($cmd);
 		$status = get_status();
 		$status->source = $dev;
 		set_status($status);
@@ -239,12 +239,17 @@ function mount_drive($vars) {
 		$host = preg_replace('/[^a-zA-Z0-9\.\-\_]/', '', $host);
 		$path = preg_replace('/[^a-zA-Z0-9\.\-\_ ]/', '', $path);
 		$domain = preg_replace('/[^a-zA-Z0-9\.\-\_]/', '', $vars['cifs_domain']);
-		$cmd = "mount.cifs '//$host/$path' ".MOUNTPOINT." -o";
-		if (empty($user) && empty($pass)) $cmd .= " guest";
-		if (!empty($domain)) $cmd .= " dom=$domain";
-		if (!empty($user)) $cmd .= " user=$user";
-		if (!empty($pass)) $cmd .= " pass='$pass'";
-		$error = shell_exec(escapeshellcmd($cmd).' 2>&1');
+		$user = trim(preg_replace('/[^a-zA-Z0-9\.\-\_]/', '', $vars['cifs_username']));
+		$pass = $vars['cifs_password'];
+		$cmd = "mount.cifs '//$host/$path' ".MOUNTPOINT." -o ";
+		$options = array();
+		if (empty($user) && empty($pass)) $options[] = "guest";
+		if (!empty($domain)) $options[] = "dom=$domain";
+		if (!empty($user)) $options[] = "user=$user";
+		if (!empty($pass)) $options[] = "pass='$pass'";
+		$cmd .= trim(implode(',', $options), ',');
+		$cmd .= ' 2>&1';
+		$error = shell_exec($cmd);
 		break;
 	case 'ssh':
 		$host = trim(preg_replace('/[^a-zA-Z0-9\.\-\_]/', '', $vars['ssh_host']));
@@ -261,20 +266,24 @@ function mount_drive($vars) {
 		$pass = $vars['ftp_password'];
 		$cmd = "curlftpfs $host ".MOUNTPOINT;
 		if (!empty($user)) {
-			$cmd .= ' -o user='.$user;
+			$cmd .= " -o 'user=$user";
 			if (!empty($pass)) $cmd .= ':'.$pass;
+			$cmd .= "'";
 		}
-		$error = shell_exec(escapeshellcmd($cmd).' 2>&1');
+		$cmd .= ' 2>&1';
+		$error = shell_exec($cmd);
 		break;
 	default:
 		return array('status'=>FALSE, 'error'=>'Unknown mount type');
 		break;
 	}
+	// Log command used to mount filesystem
+	file_put_contents(LOG_FILE, "Executing: $cmd\n", FILE_APPEND);
 	// Confirm drive is mounted and return result in an array
 	$m = trim(shell_exec('mount | grep '.MOUNTPOINT));
-	if (strlen($m)<16) return array('status'=>FALSE, 'error'=>$error);
+	if (strlen($m)<16) return array('status'=>FALSE, 'error'=>nl2br($error));
 	$u = get_usage();
-	if (sizeof($u)<7) return array('status'=>FALSE, 'error'=>$error);
+	if (sizeof($u)<7) return array('status'=>FALSE, 'error'=>nl2br($error));
 	$u['status'] = TRUE;
 	return $u;
 }
