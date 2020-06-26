@@ -31,6 +31,7 @@ The original since 2010&mdash;now with more Github!
   * Over 2 million downloads
   * Free and open source software
   * Create a backup image in a few clicks
+  * Live system; works on systems that won't even boot
   * Provides VNC access for remote assistance
   * Bare-metal recovery restores master boot record, partition table
   * Selectively restore certain parts
