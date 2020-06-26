@@ -4,7 +4,7 @@
   <a href="http://redorescue.com/"><img width="100%" src="http://redorescue.com/images/header.png"></a>
 </p>
 
-[![Download Redo Rescue: Backup and Recovery](https://img.shields.io/sourceforge/dt/redobackup.svg)](https://sourceforge.net/projects/redobackup/files/latest/download)
+[![Download Redo Rescue: Backup and Recovery](https://img.shields.io/sourceforge/dt/redobackup.svg)](https://sourceforge.net/projects/redobackup/files/latest/download) [![Download Redo Rescue: Backup and Recovery](https://img.shields.io/sourceforge/dw/redobackup.svg)](https://sourceforge.net/projects/redobackup/files/latest/download)
 
 
 ## About
