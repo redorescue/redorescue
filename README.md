@@ -59,6 +59,19 @@ The latest ISO image can be downloaded from SourceForge:
 [![Download Redo Rescue: Backup and Recovery](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/redobackup/files/latest/download)
 
 
+## Examples
+
+Redo Rescue can be used in countless ways to recover from disaster, replicate a system, or just set things back to how they were before. Here are some example use cases:
+
+* You've installed and activated Windows, configured all the necessary drivers, and installed an office suite for a family member. Because of the time involved, you don't want to have to repeat this process again. Use Redo Rescue to save a backup image to a USB stick in case the hard drive crashes.
+
+* A teacher has dozens of identical machines in her classroom that run the same Linux-based operating system. She can use Redo Rescue to make a snapshot image of the working system, so that if a student's system becomes unusable she can easily restore the system to working condition in minutes.
+
+* A company laptop has many different software components that require tedious configuration, and its users are more likely to click on links to malware or viruses. Use Redo Rescue to resize the existing partitions, create a backup partition on the same drive, and save a backup image.
+
+* An office server needs to be upgraded with all new hardware, but the old system needs to stay running while the replacement is prepared. Use Redo Rescue to create an image, restore it to new hardware, and then make the switch with minimal downtime, while preserving the old machine in case of failure.
+
+
 ## Warning
 
 Redo Rescue relies on [sfdisk](https://manpages.debian.org/stretch/util-linux/sfdisk.8.en.html) to backup and restore partition tables, and [partclone](https://manpages.debian.org/stretch/partclone/partclone.8.en.html) to create and restore backups of the data on each partition. Both are considered very reliable but could contain unknown bugs.
