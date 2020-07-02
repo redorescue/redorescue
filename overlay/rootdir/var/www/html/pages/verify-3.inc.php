@@ -12,7 +12,7 @@ set_status($status);
 
 // Load image details
 $image = get_image_info();
-if (is_string($image)) crash($image, 'verify-3');
+if (is_string($image)) crash($image, 'verify-2');
 ?>
 
 <h1>Verify</h1>
