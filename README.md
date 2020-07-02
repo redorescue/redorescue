@@ -90,6 +90,11 @@ Source code for previous releases can be found on [SourceForge](https://sourcefo
 
 ## Changelog
 
+### Version 2.0.3 (2020-07-01)
+  * Fixed passing credentials for CIFS/SMB shares
+  * Place FTP passwords in single quotes to handle special characters
+  * Preserve line breaks in mount errors when displayed as dialogs
+
 ### Version 2.0.2 (2020-06-25)
   * Prevent application from hanging when mounting certain partition types
   * Moved to nginx for application web server to resolve mount issues
