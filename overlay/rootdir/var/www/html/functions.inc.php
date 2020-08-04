@@ -233,6 +233,12 @@ function mount_drive($vars) {
 		$status->source = $dev;
 		set_status($status);
 		break;
+	case 'nfs':
+		$host = preg_replace('/[^a-zA-Z0-9\.\-\_]/', '', $vars['nfs_host']);
+		$path = preg_replace('/[^a-zA-Z0-9\.\-\_ \/]/', '', $vars['nfs_share']);
+		$cmd = "mount '$host:$path' ".MOUNTPOINT.' 2>&1';
+		$error = shell_exec($cmd);
+		break;
 	case 'cifs':
 		$loc = trim(preg_replace('/\\\+|\/+/', '|', $vars['cifs_location']));
 		list($host, $path) = explode('|', trim($loc, '|'));

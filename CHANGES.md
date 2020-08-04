@@ -1,5 +1,8 @@
 # Changes to Redo Rescue
 
+## Version 2.0.4 (UNRELEASED)
+  * Add support for mounting NFS shares
+
 ## Version 2.0.3 (2020-07-01)
   * Fixed passing credentials for CIFS/SMB shares
   * Place FTP passwords in single quotes to handle special characters

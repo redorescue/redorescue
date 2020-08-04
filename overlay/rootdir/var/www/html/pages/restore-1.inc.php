@@ -25,6 +25,7 @@ $options = get_part_options($disks, array(), '/iso9660|fat.*|ext\d|ntfs/');
   <ul id="redo_tabs" class="nav nav-tabs" style="margin-bottom: 1em;">
     <li class="active"><a href="#local" data-toggle="tab">This computer</a></li>
     <li><a href="#cifs" data-toggle="tab">Network drive</a></li>
+    <li><a href="#nfs" data-toggle="tab">NFS</a></li>
     <li><a href="#ssh" data-toggle="tab">SSH</a></li>
     <li><a href="#ftp" data-toggle="tab">FTP</a></li>
   </ul>
@@ -79,6 +80,21 @@ $options = get_part_options($disks, array(), '/iso9660|fat.*|ext\d|ntfs/');
               </span>
           </div>
 	</div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="nfs">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Host <a data-toggle="tooltip" title="Hostname or IP address of the NFSv3 share"><i class="fas fa-info-circle text-info"></i></a></label>
+        <div class="col-sm-10">
+          <input class="form-control" id="nfs_host" name="nfs_host" placeholder="192.168.0.100" type="text">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Share <a data-toggle="tooltip" title="Exported NFS directory path"><i class="fas fa-info-circle text-info"></i></a></label>
+        <div class="col-sm-10">
+          <input class="form-control" id="nfs_share" name="nfs_share" placeholder="/home/user" type="text">
+        </div>
       </div>
     </div>
 
