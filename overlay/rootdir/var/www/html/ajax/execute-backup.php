@@ -76,12 +76,12 @@ if (sizeof($status->progress->exec) > 0) {
 			$return['part_pct'] = preg_replace('/[^0-9\.\%]/', '', $p);
 			$part_pct = $return['part_pct'];
 		}
-		if (preg_match('/ERROR/i', $l))
+		if (preg_match('/ERROR|WARNING/i', $l))
 			$return['details'] = $l;
 		if (preg_match('/Input\/output error/i', $l))
-			ajax_abort('Error reading or writing data; make sure drive is still accessible');
+			ajax_abort('Read/write error. Common causes: Drive failure, bad sectors, network disconnection, filesystem errors');
 		if (preg_match('/broken pipe/i', $l))
-			ajax_abort('Error saving backup; target drive may have disconnected');
+			ajax_abort('Error saving backup: Target drive or network may have disconnected');
 		if (preg_match('/^Cloned successfully\.$/', $l)) {
 			$return['details'] = "Finished imaging $part_name";
 			$part_pct = 100;

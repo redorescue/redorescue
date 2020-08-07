@@ -74,12 +74,12 @@ if (sizeof($status->progress->exec) > 0) {
 			$return['part_pct'] = preg_replace('/[^0-9\.\%]/', '', $p);
 			$part_pct = $return['part_pct'];
 		}
-		if (preg_match('/ERROR/i', $l))
+		if (preg_match('/ERROR|WARNING/i', $l))
 			ajax_abort($l);
 		if (preg_match('/Input\/output error/i', $l))
-			ajax_abort('Error reading data; make sure drive is still accessible');
+			ajax_abort('Read/write error. Common causes: Drive failure, bad sectors, network disconnection, filesystem errors');
 		if (preg_match('/broken pipe/i', $l))
-			ajax_abort('Error reading image; source drive may have disconnected');
+			ajax_abort('Error reading image: Source drive may have disconnected');
 		if (preg_match('/^Checked successfully\.$/', $l)) {
 			$return['details'] = "Finished verifying $part_name";
 			$part_pct = 100;
