@@ -70,6 +70,7 @@ $status = get_status();
 <div class="row">
   <div class="col-sm-12 text-center">
     <button id="cancel" type="reset" class="btn btn-danger" onClick="cancel();"><i class="fas fa-times-circle"></i> Cancel</button>
+    <button style="display: none;" id="again" type="button" class="btn btn-default" onClick="again();"><i class="fas fa-redo"></i> Start again</button>
     <button style="display: none;" id="exit" type="button" class="btn btn-primary" onClick="exit();"><i class="fas fa-check-circle"></i> Exit</button>
   </div>
 </div>
@@ -78,6 +79,10 @@ $status = get_status();
 
 function exit() {
 	$('#content').load('/ajax/exit.php');
+}
+
+function again() {
+	location.replace('/');
 }
 
 function cancel() {
@@ -138,6 +143,7 @@ function start() {
 					$('#overall_pct').html('100%');
 					$('#overall_bar').width('100%').parent().removeClass('active');
 					$('#cancel').hide();
+					$('#again').show();
 					$('#exit').show();
 					bootbox.alert("<h3><i class='fas fa-check-circle text-success'></i> Restore complete</h3><p>All done! "+r['done']+"</p>");
 				}
