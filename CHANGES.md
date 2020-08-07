@@ -1,6 +1,6 @@
 # Changes to Redo Rescue
 
-## Version 2.0.4 (UNRELEASED)
+## Version 2.0.4 (2020-08-07)
   * Add support for mounting NFS shares
   * Preinstall disabled SSH server (enable by running `/root/enable-ssh`)
   * Add support for reading `sfdisk` data from legacy backup images
