@@ -706,7 +706,9 @@ function get_legacy_image_info() {
 	$mbr_data = file_get_contents($prefix_path.'.mbr');
 	if (strlen($mbr_data)<32768)
 		return 'Unable to open MBR data of legacy image';
-	$sfd_data = file_get_contents($prefix_path.'.sfdisk');
+	$sfd_file = file($prefix_path.'.sfdisk');
+	// Reformat legacy sfdisk data to ignore extraneous lines that cause errors
+	foreach ($sfd_file as $l) if (!preg_match('/^$|^    \-/', $l)) $sfd_data .= $l;
 	if (strlen($sfd_data)<128)
 		return 'Unable to open sfdisk data of legacy image';
 	$timestamp = date('r', filemtime($prefix_path.'.backup'));
