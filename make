@@ -139,10 +139,15 @@ apt install --no-install-recommends --yes \
 	lshw-gtk testdisk curlftpfs nmap cifs-utils time openssh-client \
 	rsync reiserfsprogs dosfstools ntfs-3g hfsutils reiser4progs sshfs \
 	jfsutils smbclient wget partclone iputils-ping net-tools yad pigz \
-	nfs-common nginx php-fpm chromium php-cli iptables-persistent
+	nfs-common nginx php-fpm chromium php-cli iptables-persistent \
+	openssh-server
 
 # System settings
 perl -p -i -e 's/^set compatible$/set nocompatible/g' /etc/vim/vimrc.tiny
+
+# Disable SSH server and delete keys
+systemctl disable ssh
+rm -f /etc/ssh/ssh_host_*
 
 # Prevent chromium "save password" prompts
 mkdir -p /etc/chromium/policies/managed

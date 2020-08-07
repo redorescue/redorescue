@@ -1,8 +1,8 @@
 #!/bin/bash
-apt update; apt --yes install openssh-server
 perl -p -i -e 's/^#PermitRootLogin .*/PermitRootLogin yes/g' /etc/ssh/sshd_config
-systemctl reload ssh
+dpkg-reconfigure openssh-server
+systemctl start ssh
 ip=`ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1`
 echo
-echo "Done. You may now connect via SSH to 'root@$ip'."
+echo "SSH enabled. You may now connect to 'root@$ip'."
 echo
