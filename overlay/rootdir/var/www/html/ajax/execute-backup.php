@@ -74,6 +74,9 @@ if (sizeof($status->progress->exec) > 0) {
 			$return['time_remaining'] = trim(preg_replace('/[^0-9\:]/', '', $r), ':');
 			$return['speed'] = preg_replace('/Rate\:\s+|,/', '', $s);
 			$return['part_pct'] = preg_replace('/[^0-9\.\%]/', '', $p);
+			// Ignore partclone's initial report of 1.00% complete when speed is "0.00byte/min"
+			if ( (preg_match('/0\.00byte/', $return['speed'])) && ($return['part_pct']=='1.00%') )
+				$return['part_pct'] = '0.00%';
 			$part_pct = $return['part_pct'];
 		}
 		if (preg_match('/ERROR|WARNING/i', $l))
@@ -109,6 +112,7 @@ if (sizeof($status->progress->exec) > 0) {
 		$status->progress->exec[] = array_shift($status->progress->wait);
 		set_status($status);
 		$cmd = backup_part($status->progress->exec[0]);
+		$return['part_pct'] = '0.00%';
 	} else {
 		// No partitions waiting; see if we're finished
 		if (sizeof($status->progress->done) == sizeof($status->parts)) {
