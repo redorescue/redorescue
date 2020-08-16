@@ -122,9 +122,17 @@ if [ "$ARCH" == "i386" ]; then
 else
 	KERN="amd64"
 fi
+if [ "$BASE" == "buster" ]; then
+	# Buster uses PHP 7.3 and needs extra Chromium packages
+	PHPV="7.3"
+	PKGS="chromium-common chromium-sandbox"
+else
+	# Stretch uses PHP 7.0
+	PHPV="7.0"
+	PKGS=""
+fi
 cat >> $ROOT/$FILE <<EOL
 # Install packages
-# Be sure to include "chromium-sandbox" for buster images with chromium
 export DEBIAN_FRONTEND=noninteractive
 apt install --no-install-recommends --yes \
 	linux-image-$KERN live-boot systemd-sysv firmware-linux-free vim-tiny \
@@ -132,18 +140,21 @@ apt install --no-install-recommends --yes \
 	plymouth plymouth-themes compton libnotify-bin xfce4-notifyd beep \
 	fdpowermon gir1.2-notify-0.7 laptop-detect pm-utils sudo dbus-x11 \
 	network-manager-gnome fonts-lato xfce4-appfinder x11vnc pwgen slim \
-	tint2 nitrogen gtk-theme-switch gtk2-engines numix-gtk-theme \
+	tint2 nitrogen gtk-theme-switch gtk2-engines numix-gtk-theme xvkbd \
 	gpicview mousepad lxappearance lxmenu-data lxrandr lxterminal volti \
 	pcmanfm libfm-modules os-prober discover hdparm smartmontools lvm2 \
 	gparted gnome-disk-utility gsettings-desktop-schemas baobab gddrescue \
 	lshw-gtk testdisk curlftpfs nmap cifs-utils time openssh-client \
 	rsync reiserfsprogs dosfstools ntfs-3g hfsutils reiser4progs sshfs \
 	jfsutils smbclient wget partclone iputils-ping net-tools yad pigz \
-	nfs-common nginx php-fpm chromium php-cli iptables-persistent \
-	openssh-server
+	nfs-common nginx php-fpm php-cli iptables-persistent openssh-server \
+	chromium $PKGS
 
-# System settings
+# Set vi editor preferences
 perl -p -i -e 's/^set compatible$/set nocompatible/g' /etc/vim/vimrc.tiny
+
+# Use local RTC in Linux (via /etc/adjtime) and disable network time updates
+systemctl disable systemd-timesyncd.service
 
 # Disable SSH server and delete keys
 systemctl disable ssh
@@ -173,10 +184,9 @@ update-initramfs -u
 ln -s /usr/bin/pcmanfm /usr/bin/nautilus
 
 # Configure nginx/php-fpm application server
-perl -p -i -e 's/^user = .*$/user = root/g' /etc/php/7.0/fpm/pool.d/www.conf
-perl -p -i -e 's/^group = .*$/group = root/g' /etc/php/7.0/fpm/pool.d/www.conf
-perl -p -i -e 's/^ExecStart=(.*)$/ExecStart=\$1 -R/g' /lib/systemd/system/php7.0-fpm.service
-systemctl daemon-reload
+perl -p -i -e 's/^user = .*$/user = root/g' /etc/php/$PHPV/fpm/pool.d/www.conf
+perl -p -i -e 's/^group = .*$/group = root/g' /etc/php/$PHPV/fpm/pool.d/www.conf
+perl -p -i -e 's/^ExecStart=(.*)$/ExecStart=\$1 -R/g' /lib/systemd/system/php$PHPV-fpm.service
 cat > /etc/nginx/sites-available/redo <<'END'
 server {
 	listen		80 default_server;
@@ -184,7 +194,7 @@ server {
 	root		/var/www/html;
 	index		index.php;
 	location ~* \.php$ {
-		fastcgi_pass	unix:/run/php/php7.0-fpm.sock;
+		fastcgi_pass	unix:/run/php/php$PHPV-fpm.sock;
 		include		fastcgi_params;
 		fastcgi_param	SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
 		fastcgi_param	SCRIPT_NAME \$fastcgi_script_name;
@@ -279,7 +289,7 @@ chroot $ROOT/ /bin/bash -c "chown -R www-data: /var/www/html"
 
 # Enable startup of Redo monitor service
 chroot $ROOT/ /bin/bash -c "chmod 644 /etc/systemd/system/redo.service"
-chroot $ROOT/ /bin/bash -c "systemctl daemon-reload; systemctl enable redo"
+chroot $ROOT/ /bin/bash -c "systemctl enable redo"
 
 # Update version number
 perl -p -i -e "s/\\\$VERSION/$VER/g" image/isolinux/isolinux.cfg

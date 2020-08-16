@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=xvkbd
+Name=Virtual Keyboard
+Comment=On-screen keyboard
+Categories=Utility;
+Keywords=keyboard;input
+Icon=input-keyboard

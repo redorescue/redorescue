@@ -3,6 +3,9 @@
 ## Version 2.0.5
   * Ignore inaccurate partclone progress reports of 1.00% at beginning
   * Fix cumulative progress bar value when backing multiple partitions up
+  * Use RTC local time zone for Linux and disable NTP time sync
+  * Add on-screen virtual keyboard for POS and touchscreen systems
+  * New `make` script modifications to prepare for upgrade to Debian 10
 
 ## Version 2.0.4 (2020-08-07)
   * Add support for mounting NFS shares

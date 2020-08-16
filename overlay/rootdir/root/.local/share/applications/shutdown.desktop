@@ -5,5 +5,4 @@ Name=Shutdown
 Comment=Power off system
 Categories=Utility;
 Icon=system-shutdown-symbolic
-Comment=Shutdown
 Keywords=system;shutdown;power;
