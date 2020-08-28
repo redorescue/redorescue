@@ -1,11 +1,29 @@
-#php -S 127.0.0.1:80 -t /var/www/html >/tmp/php.log 2>&1 &
+# Launch network management applet
 nm-applet &
-( pwgen -A 4 > /tmp/vncpasswd && x11vnc -bg -forever -quiet -display :0 -passwdfile /tmp/vncpasswd ) &
-nitrogen --restore &
-compton &
-tint2 &
-( sleep 1 && /usr/lib/i386-linux-gnu/xfce4/notifyd/xfce4-notifyd ) &
-fdpowermon &
+
+# Start volume control applet
 volti &
+
+# Launch power manager daemon
+xfce4-power-manager &
+
+# Launch X11 VNC server with random password
+( pwgen -A 4 > /tmp/vncpasswd && x11vnc -bg -forever -quiet -display :0 -passwdfile /tmp/vncpasswd ) &
+
+# Set background image
+nitrogen --restore &
+
+# Start X11 compositor
+compton &
+
+# Start taskbar
+tint2 &
+
+# Start notification daemon
+( sleep 1 && /usr/lib/i386-linux-gnu/xfce4/notifyd/xfce4-notifyd ) &
+
+# Give user 'redo' access to the running X server
 xhost si:localuser:redo &
+
+# Launch the Redo application in Chromium
 ( sleep 1 && sudo -u redo chromium --start-maximized --app=http://localhost ) &
