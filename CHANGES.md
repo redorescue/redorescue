@@ -3,6 +3,7 @@
 ## Version 2.0.6 (UNRELEASED)
   * Show welcome notification only on first run (if no status file found)
   * Remove `fdpowermon`, which seems to be causing some UI quirks
+  * Add `xfce4-power-manager` to permit power and brightness control
 
 ## Version 2.0.5 (2020-08-20)
   * Ignore inaccurate partclone progress reports of 1.00% at beginning
