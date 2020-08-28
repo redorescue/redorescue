@@ -399,7 +399,8 @@ function exit_app() {
 	sync_drives();
 	unmount();
 	killall_ops();
-	@unlink(STATUS_FILE);
+	// Save empty status
+	set_status(new stdClass());
 	system('killall chromium');
 }
 

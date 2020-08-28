@@ -1,5 +1,8 @@
 # Changes to Redo Rescue
 
+## Version 2.0.6 (UNRELEASED)
+  * Show welcome notification only on first run (if no status file found)
+
 ## Version 2.0.5 (2020-08-20)
   * Ignore inaccurate partclone progress reports of 1.00% at beginning
   * Fix cumulative progress bar value when backing multiple partitions up

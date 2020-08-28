@@ -19,6 +19,15 @@
 
 require_once('functions.inc.php');
 
+// Show welcome notice once
+if (!file_exists(STATUS_FILE)) {
+	system_notice(
+		"Welcome to Redo Rescue",
+		"Additional tools can be found through the start menu",
+		"dialog-information"
+	);
+}
+
 // Initiate variable storage
 $status = new stdClass();
 
@@ -29,9 +38,6 @@ $status->hostname = $host_info['name'];
 
 // Save status
 set_status($status);
-
-// Show welcome notice
-system_notice("Welcome to Redo Rescue", "Additional tools can be found through the start menu", "dialog-information");
 
 // Set QR data
 define('QR_DATA', 'QSw3KUU5Jl1JPSQsVjxDQSo6JTUzPEcwVTxVOVYxQy06MTRVSiw2TSY+NyRSCmAK');
