@@ -138,7 +138,7 @@ apt install --no-install-recommends --yes \
 	linux-image-$KERN live-boot systemd-sysv firmware-linux-free vim-tiny \
 	xserver-xorg x11-xserver-utils xinit xterm openbox obconf obmenu \
 	plymouth plymouth-themes compton libnotify-bin xfce4-notifyd beep \
-	fdpowermon gir1.2-notify-0.7 laptop-detect pm-utils sudo dbus-x11 \
+	gir1.2-notify-0.7 laptop-detect pm-utils sudo dbus-x11 \
 	network-manager-gnome fonts-lato xfce4-appfinder x11vnc pwgen slim \
 	tint2 nitrogen gtk-theme-switch gtk2-engines numix-gtk-theme xvkbd \
 	gpicview mousepad lxappearance lxmenu-data lxrandr lxterminal volti \
