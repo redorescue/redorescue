@@ -137,16 +137,16 @@ export DEBIAN_FRONTEND=noninteractive
 apt install --no-install-recommends --yes \
 	linux-image-$KERN live-boot systemd-sysv firmware-linux-free vim-tiny \
 	xserver-xorg x11-xserver-utils xinit xterm openbox obconf obmenu sudo \
-	plymouth plymouth-themes compton libnotify-bin xfce4-notifyd beep \
+	plymouth plymouth-themes compton libnotify-bin xfce4-notifyd beep wget \
 	xfce4-power-manager gir1.2-notify-0.7 laptop-detect pm-utils dbus-x11 \
 	network-manager-gnome fonts-lato xfce4-appfinder x11vnc pwgen slim \
 	tint2 nitrogen gtk-theme-switch gtk2-engines numix-gtk-theme xvkbd \
 	gpicview mousepad lxappearance lxmenu-data lxrandr lxterminal volti \
 	pcmanfm libfm-modules os-prober discover hdparm smartmontools lvm2 \
 	gparted gnome-disk-utility gsettings-desktop-schemas baobab gddrescue \
-	lshw-gtk testdisk curlftpfs nmap cifs-utils time openssh-client \
-	rsync reiserfsprogs dosfstools ntfs-3g hfsutils reiser4progs sshfs \
-	jfsutils smbclient wget partclone iputils-ping net-tools yad pigz \
+	lshw-gtk testdisk curlftpfs nmap cifs-utils time openssh-client rsync \
+	f2fs-tools reiserfsprogs dosfstools ntfs-3g hfsutils reiser4progs \
+	sshfs jfsutils smbclient partclone iputils-ping net-tools yad pigz \
 	nfs-common nginx php-fpm php-cli iptables-persistent openssh-server \
 	chromium $PKGS
 

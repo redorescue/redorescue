@@ -6,6 +6,7 @@
   * Add `xfce4-power-manager` to permit power and brightness control
   * Updated Openbox and tint2 settings to prevent off-screen tooltips
   * Change appearance of tint2 taskbar tooltips
+  * Add support for mounting f2fs filesystems
 
 ## Version 2.0.5 (2020-08-20)
   * Ignore inaccurate partclone progress reports of 1.00% at beginning
