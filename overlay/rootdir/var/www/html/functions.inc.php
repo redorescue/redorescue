@@ -363,6 +363,16 @@ function sane_path($path) {
 }
 
 //
+// Escape path for shell commands
+//
+function escape_path($path) {
+	// Prepare a path for use as a shell argument
+	$path = escapeshellcmd($path);
+	$path = str_replace(' ', '\ ', $path);
+	return $path;
+}
+
+//
 // Get IP and try to fetch hostname via rDNS
 //
 function get_host_details() {
@@ -776,7 +786,7 @@ function backup_part($dev) {
 	$cmd .= " --source /dev/$dev --no_block_detail ";
 	$cmd .= " | pigz --stdout ";
 	$cmd .= " | split --numeric-suffixes=1 --suffix-length=3 --additional-suffix=.img --bytes=4096M - ";
-	$cmd .= '"'.sane_path($status->dir).'/'.$status->id.'_'.$dev.'_"';
+	$cmd .= escape_path(sane_path($status->dir)).'/'.$status->id.'_'.$dev.'_';
 	file_put_contents(CMD_FILE, $cmd);
 	return $cmd;
 }
@@ -793,14 +803,14 @@ function restore_part($src, $dst=NULL) {
 	$dst = sane_dev($dst);
 	@unlink(TMP_DIR.$src.'.log');
 	// Prepare command to restore a backup
-	$image_files = preg_replace('/\.redo$/', '', MOUNTPOINT.$status->file).'_'.$src.'_??*.img';
+	$image_files = preg_replace('/\.redo$/', '', escape_path(MOUNTPOINT.$status->file)).'_'.$src.'_??*.img';
 	if (!unmount('/dev/'.$dst)) return 'Unable to unmount target partition';
 	// Use of partclone.restore deprecated; use filesystem-specific binary with "--restore"
 	$fs_tool = get_fs_tool($status->image->parts->$src->fs);
 	// Is this a legacy backup image? If so, adjust the source file format
 	if (is_legacy($status->image->version)) {
 		// Handle restoring from an old backup image
-		$prefix_path = sane_path(preg_replace('/\.backup$/', '', $status->file));
+		$prefix_path = escape_path(sane_path(preg_replace('/\.backup$/', '', $status->file)));
 		$part_num = preg_replace('/[^0-9]/', '', $src);
 		$image_files = $prefix_path.'_part'.$part_num.'.???';
 	}
@@ -822,11 +832,11 @@ function verify_part($src) {
 	$src = sane_dev($src);
 	@unlink(TMP_DIR.$src.'.log');
 	// Prepare command to verify a backup
-	$image_files = preg_replace('/\.redo$/', '', MOUNTPOINT.$status->file).'_'.$src.'_??*.img';
+	$image_files = preg_replace('/\.redo$/', '', escape_path(MOUNTPOINT.$status->file)).'_'.$src.'_??*.img';
 	// Is this a legacy backup image? If so, adjust the source file format
 	if (is_legacy($status->image->version)) {
 		// Handle restoring from an old backup image
-		$prefix_path = sane_path(preg_replace('/\.backup$/', '', $status->file));
+		$prefix_path = escape_path(sane_path(preg_replace('/\.backup$/', '', $status->file)));
 		$part_num = preg_replace('/[^0-9]/', '', $src);
 		$image_files = $prefix_path.'_part'.$part_num.'.???';
 	}

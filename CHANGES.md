@@ -9,6 +9,7 @@
   * Add support for mounting f2fs filesystems
   * Add support for mounting exFAT filesystems
   * Change pigz compression level to default (remove `--fast` option)
+  * Handle special characters in pathname when verifying/restoring images
 
 ## Version 2.0.5 (2020-08-20)
   * Ignore inaccurate partclone progress reports of 1.00% at beginning
