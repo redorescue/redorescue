@@ -148,7 +148,7 @@ apt install --no-install-recommends --yes \
 	f2fs-tools reiserfsprogs dosfstools ntfs-3g hfsutils reiser4progs \
 	sshfs jfsutils smbclient partclone iputils-ping net-tools yad pigz \
 	nfs-common nginx php-fpm php-cli iptables-persistent openssh-server \
-	chromium $PKGS
+	exfat-fuse exfat-utils chromium $PKGS
 
 # Set vi editor preferences
 perl -p -i -e 's/^set compatible$/set nocompatible/g' /etc/vim/vimrc.tiny

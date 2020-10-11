@@ -154,7 +154,7 @@ function get_disk_options($disks, $type_filter='/(^disk)/') {
 //
 // Get list of partitions for dropdown
 //
-function get_part_options($disks, $exclude=array(), $fstype_filter='/fat.*|ext\d|ntfs|f2fs/') {
+function get_part_options($disks, $exclude=array(), $fstype_filter='/fat.*|exfat|ext\d|ntfs|f2fs/') {
 	$options = array();
 	foreach ($disks->blockdevices as $d) {
 		// First check for children (partitions)
