@@ -17,7 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-VER=2.0.6
+VER=2.0.7
 BASE=stretch
 ARCH=amd64
 ROOT=rootdir
@@ -145,7 +145,7 @@ apt install --no-install-recommends --yes \
 	pcmanfm libfm-modules os-prober discover hdparm smartmontools lvm2 \
 	gparted gnome-disk-utility gsettings-desktop-schemas baobab gddrescue \
 	lshw-gtk testdisk curlftpfs nmap cifs-utils time openssh-client rsync \
-	f2fs-tools reiserfsprogs dosfstools ntfs-3g hfsutils reiser4progs \
+	f2fs-tools reiserfsprogs dosfstools ntfs-3g hfsutils reiser4progs less \
 	sshfs jfsutils smbclient partclone iputils-ping net-tools yad pigz \
 	nfs-common nginx php-fpm php-cli iptables-persistent openssh-server \
 	exfat-fuse exfat-utils chromium $PKGS

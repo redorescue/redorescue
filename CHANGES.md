@@ -1,5 +1,9 @@
 # Changes to Redo Rescue
 
+## Version 2.0.7 (UNRELEASED)
+  * Add `less` package
+  * Do not try to verify invalid filesystems (those imaged in raw mode)
+
 ## Version 2.0.6 (2020-10-10)
   * Show welcome notification only on first run (if no status file found)
   * Remove `fdpowermon`, which seems to be causing some UI quirks

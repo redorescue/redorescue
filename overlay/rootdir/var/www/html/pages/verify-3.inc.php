@@ -37,12 +37,13 @@ if (is_string($image)) crash($image, 'verify-2');
 	foreach ($image->parts as $name=>$p) {
 		$part_num = preg_replace('/[^0-9]/', '', $name);
 		$checked = 'checked';
-		print "<tr>";
+		if ($p->fs=='') $checked = 'disabled';
+		print "<tr ".(is_null($p->fs)?'class="text-muted"':'').">";
 		print "  <td><input type='checkbox' $checked name='verify_parts[]' id='verify_$name' value='$name'></td>";
 		print "  <td>$name</td>";
 		print "  <td>$p->size</td>";
 		print "  <td nowrap>$p->type</td>";
-		print "  <td nowrap>$p->fs</td>";
+		print "  <td nowrap>".(is_null($p->fs)?'raw <i class="fas fa-info-circle text-danger" data-toggle="tooltip" title="This partition was cloned in raw mode and can be restored, but only valid filesystems can be verified"></i>':$p->fs)."</td>";
 		print "  <td>$p->desc</td>";
 		print "</tr>";
 	}
