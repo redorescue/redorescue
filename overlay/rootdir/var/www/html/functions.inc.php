@@ -774,7 +774,7 @@ function backup_part($dev) {
 	if ($fs_tool!='dd') $fs_mode = "--clone";
 	$cmd = "partclone.$fs_tool $fs_mode --force --UI-fresh 1 --logfile ".TMP_DIR."$dev.log ";
 	$cmd .= " --source /dev/$dev --no_block_detail ";
-	$cmd .= " | pigz --stdout --fast ";
+	$cmd .= " | pigz --stdout ";
 	$cmd .= " | split --numeric-suffixes=1 --suffix-length=3 --additional-suffix=.img --bytes=4096M - ";
 	$cmd .= '"'.sane_path($status->dir).'/'.$status->id.'_'.$dev.'_"';
 	file_put_contents(CMD_FILE, $cmd);
