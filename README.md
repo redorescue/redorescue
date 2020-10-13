@@ -96,4 +96,4 @@ Source code for previous releases can be found on [SourceForge](https://sourcefo
 
 ## License
 
-**Redo Rescue** is released under the GNU GPLv3.
+**Redo Rescue** is released under the GNU GPLv3. Redo Rescue's distinctive logos and graphics are not released under the GNU GPLv3. If you would like to create a fork of Redo Rescue, you must create distinctly different graphic assets to identify it.
