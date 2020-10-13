@@ -1,6 +1,6 @@
 # Changes to Redo Rescue
 
-## Version 2.0.7 (UNRELEASED)
+## Version 2.0.7 (2020-10-12)
   * Add `less` package
   * Do not try to verify invalid filesystems (those imaged in raw mode)
 
