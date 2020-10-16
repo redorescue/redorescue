@@ -18,7 +18,10 @@
 
 <div>
   <p align="center">
-    <a href="http://redorescue.com"><img src="http://redorescue.com/images/screenshots/thumbs/welcome.jpg"></a>&nbsp;
+    <a href="http://redorescue.com"><img src="http://redorescue.com/images/screenshots/thumbs/boot.jpg"></a>&nbsp;
+    <a href="http://redorescue.com"><img src="http://redorescue.com/images/screenshots/thumbs/welcome.jpg"></a>
+  </p>
+  <p align="center">
     <a href="http://redorescue.com"><img src="http://redorescue.com/images/screenshots/thumbs/backup-progress.jpg"></a>&nbsp;
     <a href="http://redorescue.com"><img src="http://redorescue.com/images/screenshots/thumbs/detailed-logs.jpg"></a>
   </p>
@@ -36,8 +39,9 @@
   * Bare-metal recovery restores master boot record, partition table
   * Selectively restore certain parts
   * Optionally re-map original partitions to different places
+  * UEFI Secure Boot support
   * Based on 64-bit Debian Linux
-  * 400M ISO can be written to CD or USB
+  * 450M ISO can be written to CD or USB
   * Error handling and low space warnings
   * Detailed logs can be copied to clipboard
   * Supports restoring images made with v1.0.4 release
