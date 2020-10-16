@@ -17,12 +17,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-VER=2.0.7
-BASE=stretch
+VER=3.0.0
+BASE=buster
 ARCH=amd64
 ROOT=rootdir
 FILE=setup.sh
 USER=redo
+NONFREE=false
 
 # Set colored output codes
 red='\e[1;31m'
@@ -43,25 +44,29 @@ if [ "$EUID" -ne 0 ]
 fi
 
 # Check: No spaces in cwd
-WD=`pwd`
-if [[ $WD == *" "* ]]
+if [[ `pwd` == *" "* ]]
 	then echo -e "$red* ERROR: Current absolute pathname contains a space.$off\n"
 	exit
 fi
 
-# Action for "clean"
+# Get requested action
 ACTION=$1
-if [ "$ACTION" == "clean" ]; then
-	rm -rf {image,$ROOT,*.iso}
+
+clean() {
+	#
+	# Remove all build files
+	#
+	rm -rf {image,scratch,$ROOT,*.iso}
 	echo -e "$yel* All clean!$off\n"
 	exit
-fi
+}
 
-# Actions for build (default) and "changes"
-if [ "$ACTION" != "changes" ]; then
-	# Prepare debootstrap host environment
+prepare() {
+	#
+	# Prepare host environment
+	#
 	echo -e "$yel* Building from scratch.$off"
-	rm -rf {image,$ROOT,*.iso}
+	rm -rf {image,scratch,$ROOT,*.iso}
 	CACHE=debootstrap-$BASE-$ARCH.tar.gz
 	if [ -f "$CACHE" ]; then
 		echo -e "$yel* $CACHE exists, extracting existing archive...$off"
@@ -70,20 +75,22 @@ if [ "$ACTION" != "changes" ]; then
 	else 
 		echo -e "$yel* $CACHE does not exist, running debootstrap...$off"
 		sleep 2
+		# Legacy needs: syslinux, syslinux-common, isolinux, memtest86+
 		apt-get install debootstrap squashfs-tools grub-pc-bin \
-			mtools grub-efi-amd64-bin syslinux \
-			syslinux-common isolinux xorriso memtest86+
+			grub-efi-amd64-signed shim-signed mtools xorriso \
+			syslinux syslinux-common isolinux memtest86+
 		rm -rf $ROOT; mkdir -p $ROOT
 		debootstrap --arch=$ARCH --variant=minbase $BASE $ROOT
 		tar zcvf $CACHE ./$ROOT	
 	fi
-else
-	# Enter existing system shell to make changes
-	echo -e "$yel* Updating existing image.$off"
-fi
 
-# Setup script (ALL): Base configuration
-cat > $ROOT/$FILE <<EOL
+}
+
+script_init() {
+	#
+	# Setup script: Base configuration
+	#
+	cat > $ROOT/$FILE <<EOL
 #!/bin/bash
 
 # System mounts
@@ -114,41 +121,53 @@ END
 export HOME=/root; export LANG=C; export LC_ALL=C;
 
 EOL
+}
 
-# Setup script (BUILD): Install packages
-if [ "$ACTION" != "changes" ]; then
-if [ "$ARCH" == "i386" ]; then
-	KERN="686"
-else
-	KERN="amd64"
-fi
-if [ "$BASE" == "buster" ]; then
-	# Buster uses PHP 7.3 and needs extra Chromium packages
-	PHPV="7.3"
-	PKGS="chromium-common chromium-sandbox"
-else
-	# Stretch uses PHP 7.0
-	PHPV="7.0"
-	PKGS=""
-fi
-cat >> $ROOT/$FILE <<EOL
+script_build() {
+	#
+	# Setup script: Install packages
+	#
+	if [ "$ARCH" == "i386" ]; then
+		KERN="686"
+	else
+		KERN="amd64"
+	fi
+	if [ "$BASE" == "buster" ]; then
+		# Buster uses PHP 7.3 and needs extra Chromium packages
+		PHPV="7.3"
+		PKGS="chromium-common chromium-sandbox"
+	else
+		# Stretch uses PHP 7.0
+		PHPV="7.0"
+		PKGS=""
+	fi
+	cat >> $ROOT/$FILE <<EOL
 # Install packages
 export DEBIAN_FRONTEND=noninteractive
 apt install --no-install-recommends --yes \
-	linux-image-$KERN live-boot systemd-sysv firmware-linux-free vim-tiny \
-	xserver-xorg x11-xserver-utils xinit xterm openbox obconf obmenu sudo \
-	plymouth plymouth-themes compton libnotify-bin xfce4-notifyd beep wget \
-	xfce4-power-manager gir1.2-notify-0.7 laptop-detect pm-utils dbus-x11 \
-	network-manager-gnome fonts-lato xfce4-appfinder x11vnc pwgen slim \
-	tint2 nitrogen gtk-theme-switch gtk2-engines numix-gtk-theme xvkbd \
-	gpicview mousepad lxappearance lxmenu-data lxrandr lxterminal volti \
-	pcmanfm libfm-modules os-prober discover hdparm smartmontools lvm2 \
-	gparted gnome-disk-utility gsettings-desktop-schemas baobab gddrescue \
-	lshw-gtk testdisk curlftpfs nmap cifs-utils time openssh-client rsync \
-	f2fs-tools reiserfsprogs dosfstools ntfs-3g hfsutils reiser4progs less \
-	sshfs jfsutils smbclient partclone iputils-ping net-tools yad pigz \
-	nfs-common nginx php-fpm php-cli iptables-persistent openssh-server \
-	exfat-fuse exfat-utils chromium $PKGS
+	\
+	linux-image-$KERN live-boot systemd-sysv firmware-linux-free sudo \
+        vim-tiny pm-utils iptables-persistent iputils-ping net-tools wget \
+	openssh-client openssh-server rsync less \
+	\
+	xserver-xorg x11-xserver-utils xinit openbox obconf obmenu slim \
+	plymouth plymouth-themes compton dbus-x11 libnotify-bin xfce4-notifyd \
+	gir1.2-notify-0.7 tint2 nitrogen xfce4-appfinder xfce4-power-manager \
+	gsettings-desktop-schemas lxrandr lxmenu-data lxterminal lxappearance \
+	network-manager-gnome gtk2-engines numix-gtk-theme gtk-theme-switch \
+	fonts-lato volti pcmanfm libfm-modules gpicview mousepad x11vnc pwgen \
+	xvkbd \
+	\
+	beep laptop-detect os-prober discover lshw-gtk hdparm smartmontools \
+	nmap time lvm2 gparted gnome-disk-utility baobab gddrescue testdisk \
+	dosfstools ntfs-3g reiserfsprogs reiser4progs hfsutils jfsutils \
+	smbclient cifs-utils nfs-common curlftpfs sshfs partclone pigz yad \
+	f2fs-tools exfat-fuse exfat-utils \
+	\
+	nginx php-fpm php-cli chromium $PKGS
+
+# Modify /etc/issue banner
+perl -p -i -e 's/^D/Redo Rescue $VER\nBased on D/' /etc/issue
 
 # Set vi editor preferences
 perl -p -i -e 's/^set compatible$/set nocompatible/g' /etc/vim/vimrc.tiny
@@ -203,26 +222,61 @@ server {
 END
 rm -f /etc/nginx/sites-enabled/default
 ln -s /etc/nginx/sites-available/redo /etc/nginx/sites-enabled/
+EOL
+}
 
+script_add_nonfree() {
+	#
+	# Setup script: Install non-free packages for hardware support
+	#
+	# Non-free firmware does not comply with the Debian DFSG and is
+	# not included in official releases.  For more information, see
+	# <https://www.debian.org/social_contract> and also
+	# <http://wiki.debian.org/Firmware>.
+	#
+	# WARNING: Wireless connections are *NOT* recommended for backup
+	# and restore operations, but are included for other uses.
+	#
+	cat >> $ROOT/$FILE <<EOL
+echo "Adding non-free packages..."
+# Briefly activate non-free repo to install non-free firmware packages
+perl -p -i -e 's/main$/main non-free/' /etc/apt/sources.list
+apt update --yes
+# WARNING: Wireless connections are NOT recommended for backup/restore!
+apt install --yes \
+	firmware-linux-nonfree \
+	firmware-atheros \
+	firmware-brcm80211 \
+	firmware-iwlwifi \
+	firmware-libertas \
+	firmware-zd1211
+perl -p -i -e 's/ non-free$//' /etc/apt/sources.list
+apt update --yes
+EOL
+}
+
+script_shell() {
+	#
+	# Setup script: Insert command to open shell for making changes
+	#
+	cat >> $ROOT/$FILE << EOL
+echo -e "$red>>> Opening interactive shell. Type 'exit' when done making changes.$off"
+echo
+bash
+EOL
+}
+
+script_exit() {
+	#
+	# Setup script: Clean up and exit
+	#
+	cat >> $ROOT/$FILE <<EOL
 # Save space
 rm -f /usr/bin/{rpcclient,smbcacls,smbclient,smbcquotas,smbget,smbspool,smbtar}
 rm -f /usr/share/icons/*/icon-theme.cache
 rm -rf /usr/share/doc
 rm -rf /usr/share/man
-EOL
-fi
 
-# Setup script: (UPDATE) Open shell to make changes
-if [ "$ACTION" == "changes" ]; then
-cat >> $ROOT/$FILE << EOL
-echo -e "$red>>> Opening interactive shell. Type 'exit' when done making changes.$off"
-echo
-bash
-EOL
-fi
-
-# Setup script: (ALL) Clean up and exit
-cat >> $ROOT/$FILE <<EOL
 # Clean up and exit
 apt-get autoremove && apt-get clean
 rm -rf /var/lib/dbus/machine-id
@@ -235,87 +289,265 @@ umount /sys;
 umount /dev/pts
 exit
 EOL
+}
 
-# Copy plymouth theme before running setup script
-echo -e "$yel* Copying assets to root directory...$off"
-rsync -h --info=progress2 --archive \
-	./overlay/$ROOT/usr/share/* \
-	./$ROOT/usr/share/
+chroot_exec() {
+	#
+	# Execute setup script inside chroot environment
+	#
+	echo -e "$yel* Copying assets to root directory...$off"
+	# Copy assets before configuring plymouth theme
+	rsync -h --info=progress2 --archive \
+		./overlay/$ROOT/usr/share/* \
+		./$ROOT/usr/share/
 
-# Copy /etc/resolv.conf before running setup script
-cp /etc/resolv.conf ./$ROOT/etc/
+	# Copy /etc/resolv.conf before running setup script
+	cp /etc/resolv.conf ./$ROOT/etc/
 
-# Run setup script inside chroot
-chmod +x $ROOT/$FILE
-echo
-echo -e "$red>>> ENTERING CHROOT SYSTEM$off"
-echo
-sleep 2
-chroot $ROOT/ /bin/bash -c "./$FILE"
-echo
-echo -e "$red>>> EXITED CHROOT SYSTEM$off"
-echo
-sleep 2
-rm -f $ROOT/$FILE
+	# Run setup script inside chroot
+	chmod +x $ROOT/$FILE
+	echo
+	echo -e "$red>>> ENTERING CHROOT SYSTEM$off"
+	echo
+	sleep 2
+	chroot $ROOT/ /bin/bash -c "./$FILE"
+	echo
+	echo -e "$red>>> EXITED CHROOT SYSTEM$off"
+	echo
+	sleep 2
+	rm -f $ROOT/$FILE
+}
 
-# Prepare image
-echo -e "$yel* Preparing image...$off"
-rm -f $ROOT/root/.bash_history
-rm -rf image redorescue-$VER.iso
-mkdir -p image/{live,isolinux}
-cp $ROOT/boot/vmlinuz* image/live/vmlinuz
-cp $ROOT/boot/initrd* image/live/initrd
-cp /boot/memtest86+.bin image/live/memtest
-cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/
-cp /usr/lib/syslinux/modules/bios/menu.c32 image/isolinux/
-cp /usr/lib/syslinux/modules/bios/vesamenu.c32 image/isolinux/
-cp /usr/lib/syslinux/modules/bios/hdt.c32 image/isolinux/
-cp /usr/lib/syslinux/modules/bios/ldlinux.c32 image/isolinux/
-cp /usr/lib/syslinux/modules/bios/libutil.c32 image/isolinux/
-cp /usr/lib/syslinux/modules/bios/libmenu.c32 image/isolinux/
-cp /usr/lib/syslinux/modules/bios/libcom32.c32 image/isolinux/
-cp /usr/lib/syslinux/modules/bios/libgpl.c32 image/isolinux/
-cp /usr/share/misc/pci.ids image/isolinux/
+create_livefs() {
+	#
+	# Prepare to create new image
+	#
+	echo -e "$yel* Preparing image...$off"
+	rm -f $ROOT/root/.bash_history
+	rm -rf image redorescue-$VER.iso
+	mkdir -p image/live
 
-# Apply changes from overlay
-echo -e "$yel* Applying changes from overlay...$off"
-rsync -h --info=progress2 --archive \
-	./overlay/* \
-	.
+	# Apply changes from overlay
+	echo -e "$yel* Applying changes from overlay...$off"
+	rsync -h --info=progress2 --archive \
+		./overlay/* \
+		.
 
-# Fix permissions
-chroot $ROOT/ /bin/bash -c "chown -R root: /etc /root"
-chroot $ROOT/ /bin/bash -c "chown -R www-data: /var/www/html"
+	# Fix permissions
+	chroot $ROOT/ /bin/bash -c "chown -R root: /etc /root"
+	chroot $ROOT/ /bin/bash -c "chown -R www-data: /var/www/html"
 
-# Enable startup of Redo monitor service
-chroot $ROOT/ /bin/bash -c "chmod 644 /etc/systemd/system/redo.service"
-chroot $ROOT/ /bin/bash -c "systemctl enable redo"
+	# Enable startup of Redo monitor service
+	chroot $ROOT/ /bin/bash -c "chmod 644 /etc/systemd/system/redo.service"
+	chroot $ROOT/ /bin/bash -c "systemctl enable redo"
 
-# Update version number
-perl -p -i -e "s/\\\$VERSION/$VER/g" image/isolinux/isolinux.cfg
-echo $VER > $ROOT/var/www/html/VERSION
+	# Update version number
+	echo $VER > $ROOT/var/www/html/VERSION
 
-# Compress live filesystem
-echo -e "$yel* Compressing live filesystem...$off"
-mksquashfs $ROOT/ image/live/filesystem.squashfs -e boot
+	# Compress live filesystem
+	echo -e "$yel* Compressing live filesystem...$off"
+	mksquashfs $ROOT/ image/live/filesystem.squashfs -e boot
+}
 
-# Create ISO image
-echo -e "$yel* Creating ISO image...$off"
-xorriso -as mkisofs -r \
-	-J -joliet-long \
-	-isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \
-	-partition_offset 16 \
-	-A "Redo $VER" -volid "Redo $VER" \
-	-b isolinux/isolinux.bin \
-	-c isolinux/boot.cat \
-	-no-emul-boot -boot-load-size 4 -boot-info-table \
-	-o redorescue-$VER.iso \
-	image
+create_iso() {
+	#
+	# Create ISO image from existing live filesystem
+	#
+	if [ "$BASE" == "buster" ]; then
+		# Debian 10 supports UEFI and secure boot
+		create_uefi_iso
+	else
+		# Debian 9 supports legacy BIOS booting
+		create_legacy_iso
+	fi
+}
 
-# All done
-echo -e "$yel\nISO image saved:"
-du -sh redorescue-$VER.iso
-echo -e "$off"
-echo
-echo "Done."
-echo
+create_legacy_iso() {
+	#
+	# Create legacy ISO image for Debian 9 (version 2.0 releases)
+	#
+	if [ ! -s "image/live/filesystem.squashfs" ]; then
+		echo -e "$red* ERROR: The squashfs live filesystem is missing.$off\n"
+		exit
+	fi
+
+	# Apply image changes from overlay
+	echo -e "$yel* Applying image changes from overlay...$off"
+	rsync -h --info=progress2 --archive \
+		./overlay/image/* \
+		./image/
+
+	# Remove EFI-related boot assets
+	rm -rf image/boot
+
+	# Update version number
+	perl -p -i -e "s/\\\$VERSION/$VER/g" image/isolinux/isolinux.cfg
+	
+	# Prepare image
+	echo -e "$yel* Preparing legacy image...$off"
+	mkdir image/isolinux
+	cp $ROOT/boot/vmlinuz* image/live/vmlinuz
+	cp $ROOT/boot/initrd* image/live/initrd
+	cp /boot/memtest86+.bin image/live/memtest
+	cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/
+	cp /usr/lib/syslinux/modules/bios/menu.c32 image/isolinux/
+	cp /usr/lib/syslinux/modules/bios/vesamenu.c32 image/isolinux/
+	cp /usr/lib/syslinux/modules/bios/hdt.c32 image/isolinux/
+	cp /usr/lib/syslinux/modules/bios/ldlinux.c32 image/isolinux/
+	cp /usr/lib/syslinux/modules/bios/libutil.c32 image/isolinux/
+	cp /usr/lib/syslinux/modules/bios/libmenu.c32 image/isolinux/
+	cp /usr/lib/syslinux/modules/bios/libcom32.c32 image/isolinux/
+	cp /usr/lib/syslinux/modules/bios/libgpl.c32 image/isolinux/
+	cp /usr/share/misc/pci.ids image/isolinux/
+
+	# Create ISO image
+	echo -e "$yel* Creating legacy ISO image...$off"
+	xorriso -as mkisofs -r \
+		-J -joliet-long \
+		-isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \
+		-partition_offset 16 \
+		-A "Redo $VER" -volid "Redo Rescue $VER" \
+		-b isolinux/isolinux.bin \
+		-c isolinux/boot.cat \
+		-no-emul-boot -boot-load-size 4 -boot-info-table \
+		-o redorescue-$VER.iso \
+		image
+
+	# Report final ISO size
+	echo -e "$yel\nISO image saved:"
+	du -sh redorescue-$VER.iso
+	echo -e "$off"
+	echo
+	echo "Done."
+	echo
+}
+
+create_uefi_iso() {
+	#
+	# Create ISO image for Debian 10 (version 3.0 releases)
+	#
+	if [ ! -s "image/live/filesystem.squashfs" ]; then
+		echo -e "$red* ERROR: The squashfs live filesystem is missing.$off\n"
+		exit
+	fi
+
+	# Apply image changes from overlay
+	echo -e "$yel* Applying image changes from overlay...$off"
+	rsync -h --info=progress2 --archive \
+		./overlay/image/* \
+		./image/
+
+	# Remove legacy boot assets
+	rm -rf image/isolinux
+
+	# Update version number
+	perl -p -i -e "s/\\\$VERSION/$VER/g" image/boot/grub/grub.cfg
+
+	# Prepare boot image
+	touch image/REDO
+        cp $ROOT/boot/vmlinuz* image/vmlinuz
+        cp $ROOT/boot/initrd* image/initrd
+	mkdir -p {image/EFI/{boot,debian},image/boot/grub/{fonts,theme},scratch}
+	cp /usr/share/grub/ascii.pf2 image/boot/grub/fonts/
+	cp /usr/lib/shim/shimx64.efi.signed image/EFI/boot/bootx64.efi
+	cp /usr/lib/grub/x86_64-efi-signed/grubx64.efi.signed image/EFI/boot/grubx64.efi
+	cp -r /usr/lib/grub/x86_64-efi image/boot/grub/
+
+	# Create EFI partition
+	UFAT="scratch/efiboot.img"
+	dd if=/dev/zero of=$UFAT bs=1M count=4
+	mkfs.vfat $UFAT
+	mcopy -s -i $UFAT image/EFI ::
+
+	# Create image for BIOS and CD-ROM
+	grub-mkstandalone \
+		--format=i386-pc \
+		--output=scratch/core.img \
+		--install-modules="linux normal iso9660 biosdisk memdisk search help tar ls all_video font gfxmenu png" \
+		--modules="linux normal iso9660 biosdisk search help all_video font gfxmenu png" \
+		--locales="" \
+		--fonts="" \
+		"boot/grub/grub.cfg=image/boot/grub/grub.cfg"
+
+	# Prepare image for UEFI
+	cat /usr/lib/grub/i386-pc/cdboot.img scratch/core.img > scratch/bios.img
+
+	# Create final ISO image
+	xorriso \
+		-as mkisofs \
+		-iso-level 3 \
+		-full-iso9660-filenames \
+		-joliet-long \
+		-volid "Redo Rescue $VER" \
+		-eltorito-boot \
+			boot/grub/bios.img \
+			-no-emul-boot \
+			-boot-load-size 4 \
+			-boot-info-table \
+			--eltorito-catalog boot/grub/boot.cat \
+		--grub2-boot-info \
+		--grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
+		-eltorito-alt-boot \
+			-e EFI/efiboot.img \
+			-no-emul-boot \
+		-append_partition 2 0xef scratch/efiboot.img \
+		-output redorescue-$VER.iso \
+		-graft-points \
+			image \
+			/boot/grub/bios.img=scratch/bios.img \
+			/EFI/efiboot.img=scratch/efiboot.img
+
+	# Remove scratch directory
+	rm -rf scratch
+
+	# Report final ISO size
+	echo -e "$yel\nISO image saved:"
+	du -sh redorescue-$VER.iso
+	echo -e "$off"
+	echo
+	echo "Done."
+	echo
+}
+
+
+#
+# Execute functions based on the requested action
+#
+
+if [ "$ACTION" == "clean" ]; then
+	# Clean all build files
+	clean
+fi
+
+if [ "$ACTION" == "" ]; then
+	# Build new ISO image
+	prepare
+	script_init
+	script_build
+	if [ "$NONFREE" = true ]; then
+		echo -e "$yel* Including non-free packages...$off"
+		script_add_nonfree
+	else
+		echo -e "$yel* Excluding non-free packages.$off"
+	fi
+	script_exit
+	chroot_exec
+	create_livefs
+	create_iso
+fi
+
+if [ "$ACTION" == "changes" ]; then
+	# Enter existing system to make changes
+	echo -e "$yel* Updating existing image.$off"
+	script_init
+	script_shell
+	script_exit
+	chroot_exec
+	create_livefs
+	create_iso
+fi
+
+if [ "$ACTION" == "boot" ]; then
+	# Rebuild existing ISO image (update bootloader)
+	create_iso
+fi

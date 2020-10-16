@@ -1,0 +1,77 @@
+#
+# Redo Rescue themed graphics are not licensed under GNU GPLv3.
+# Copyright (C) 2010-2020 Zebradots Software. All rights reserved.
+#
+
+title-text: ""
+desktop-color: "black"
+desktop-image: "background.png"
+desktop-image-scale-method: "fitheight"
+terminal-box: "terminal_*.png"
+terminal-font: "Unifont Regular 16"
+terminal-border: "4"
+
++ boot_menu {
+  left = 25%
+  top = 55%
+  width = 50%
+  height = 144
+  item_font = "Helvetica Bold 18"
+  item_color = "#ffffff"
+  selected_item_color = "#ffffff"
+  icon_width = 32
+  icon_height = 32
+  item_icon_space = 12
+  item_height = 48
+  item_spacing = 0
+  item_padding = 0
+  item_pixmap_style = "box_*.png"
+  selected_item_pixmap_style = "box_selected_*.png"
+  menu_pixmap_style = "x_*.png"
+  scrollbar = true
+  scrollbar_width = 20
+  scrollbar_frame = "sliderbg_*.png"
+  scrollbar_thumb = "slider_*.png"
+}
+
++ image {
+  id = "redo_logo"
+  left = 27%-180
+  top = 21%-89
+  file = "logo.png"
+}
+
++ label {
+  id = "bottom_help"
+  left = 0
+  top = 100%-40
+  width = 100%
+  align = "center"
+  color = "gray"
+  font = "Helvetica Regular 12"
+  text = @KEYMAP_MIDDLE@
+}
+
++ circular_progress {
+  id = "__timeout__"
+  center_bitmap = "circle.png"
+  tick_bitmap = "tick.png"
+  num_ticks = 24
+  ticks_disappear = true
+  start_angle = 64
+  left = 85%-68
+  top = 20%-68
+  width = 136
+  height = 136
+}
+
+#+ label {
+#  id = "__timeout__"
+#  left = 85%-68
+#  top = 20%-12
+#  width = 136
+#  height = 16
+#  align = "center"
+#  color = "#627d9f"
+#  font = "Helvetica Bold 18"
+#}

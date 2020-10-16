@@ -1,0 +1,1 @@
+Flag icons designed by Yummygum <http://blog.yummygum.com/post/130541109514/free-download-set-of-142-mini-country-flags>. Also available at <https://www.iconfinder.com/iconsets/142-mini-country-flags-16x16px>.
