@@ -1,9 +1,10 @@
 # Changes to Redo Rescue
 
-## Version 3.0.0 (UNRELEASED)
+## Version 3.0.0 (2020-10-15)
   * Switch to Debian 10 for base system
   * Add UEFI Secure Boot support
   * Beautiful new GRUB-based bootloader theme with dynamic screen layout
+  * Language selection menu for future multiple language support
   * No application changes; release is strictly to upgrade base system
 
 ## Version 2.0.7 (2020-10-12)
