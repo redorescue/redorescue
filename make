@@ -17,13 +17,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-VER=3.0.0
+VER=3.0.1
 BASE=buster
 ARCH=amd64
 ROOT=rootdir
 FILE=setup.sh
 USER=redo
-NONFREE=false
+NONFREE=true
 
 # Set colored output codes
 red='\e[1;31m'

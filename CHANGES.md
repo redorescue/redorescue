@@ -1,5 +1,9 @@
 # Changes to Redo Rescue
 
+## Version 3.0.1 (2020-10-21)
+  * Enable non-free firmware option by default in `make` script
+  * Better support for GPUs that booted to console login in version 3.0.0
+
 ## Version 3.0.0 (2020-10-15)
   * Switch to Debian 10 for base system
   * Add UEFI Secure Boot support
