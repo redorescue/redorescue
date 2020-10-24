@@ -41,7 +41,7 @@
   * Optionally re-map original partitions to different places
   * UEFI Secure Boot support
   * Based on 64-bit Debian Linux
-  * 450M ISO can be written to CD or USB
+  * ISO can be written to CD or USB
   * Error handling and low space warnings
   * Detailed logs can be copied to clipboard
   * Supports restoring images made with v1.0.4 release
