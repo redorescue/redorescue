@@ -1,7 +1,8 @@
 # Changes to Redo Rescue
 
-## Version 3.0.2 (UNRELEASED)
+## Version 3.0.2 (2020-10-24)
   * Fixed bug that prevented restoring backups for NVMe drives
+  * Add prefix declaration to fix GRUB booting on affected UEFI systems
 
 ## Version 3.0.1 (2020-10-21)
   * Enable non-free firmware option by default in `make` script
