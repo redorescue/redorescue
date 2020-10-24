@@ -1,5 +1,8 @@
 # Changes to Redo Rescue
 
+## Version 3.0.2 (UNRELEASED)
+  * Fixed bug that prevented restoring backups for NVMe drives
+
 ## Version 3.0.1 (2020-10-21)
   * Enable non-free firmware option by default in `make` script
   * Better support for GPUs that booted to console login in version 3.0.0

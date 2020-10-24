@@ -17,7 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-VER=3.0.1
+VER=3.0.2
 BASE=buster
 ARCH=amd64
 ROOT=rootdir

@@ -56,7 +56,12 @@ if (is_string($image)) crash($image, 'restore-3');
         <tbody>
 	<?php
 	foreach ($image->parts as $name=>$p) {
-		$part_num = preg_replace('/[^0-9]/', '', $name);
+		// Must also accommodate NVMe-style partition IDs
+		$part_pre = '';
+		preg_match('/(.+\D+)(\d+)$/', $name, $m);  // $m[2] contains the part_num
+		$part_num = $m[2];
+		if (preg_match('/^nvme/', $status->drive)) $part_pre = 'p';
+		$status->parts[$part] = $status->drive.$part_pre.$part_num;
 		$checked = 'checked';
 		print "<tr>";
 		print "  <td><input type='checkbox' $checked name='baremetal_parts[]' id='baremetal_$name' value='$name'></td>";
@@ -66,7 +71,7 @@ if (is_string($image)) crash($image, 'restore-3');
 		print "  <td nowrap>$p->fs</td>";
 		print "  <td>$p->desc</td>";
 		print "  <td><i class='fas fa-arrow-right text-muted'></i></td>";
-		print "  <td>$status->drive$part_num</td>";
+		print "  <td>$status->drive$part_pre$part_num</td>";
 		print "</tr>";
 	}
 	?>
