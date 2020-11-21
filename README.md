@@ -80,6 +80,10 @@ Redo Rescue relies on [sfdisk](https://manpages.debian.org/stretch/util-linux/sf
 
 Redo Rescue is designed to restore a backup image to the same system it was taken from. Even a byte-for-byte clone of a Windows drive to a target system that is nearly identical may fail to boot, regardless of the backup software used. Certain system changes can easily render a Windows, Mac, or Linux machine unbootable: changing hardware components, adding/removing/swapping disks, making significant configuration changes, or restoring to a different machine are all likely to cause boot issues. Similarly, swapping, moving, resizing, or reordering partitions will almost certainly render most operating systems unbootable. After such changes, an entire backup can be restored successfully (and all files are safely stored on the drive), yet the operating system may fail to boot. _This is not a limitation of the backup solution, but the result of changes to the system configuration._ **We strongly recommend creating a new backup image after changes are made to your system.**
 
+## Notes
+
+* By default the system logs in as the `root` user with password `redo`.
+
 
 ## Build
 
