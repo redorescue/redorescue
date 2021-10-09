@@ -17,8 +17,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-VER=3.0.2
-BASE=buster
+VER=4.0.0
+BASE=bullseye
 ARCH=amd64
 ROOT=rootdir
 FILE=setup.sh
@@ -132,14 +132,18 @@ script_build() {
 	else
 		KERN="amd64"
 	fi
-	if [ "$BASE" == "buster" ]; then
-		# Buster uses PHP 7.3 and needs extra Chromium packages
+	if [ "$BASE" == "bullseye" ]; then
+		# Bullseye-specific PHP version and packages
+		PHPV="7.4"
+		PKGS="chromium-common chromium-sandbox volumeicon-alsa"
+	elif [ "$BASE" == "buster" ]; then
+		# Buster uses PHP 7.3
 		PHPV="7.3"
-		PKGS="chromium-common chromium-sandbox"
+		PKGS="chromium-common chromium-sandbox volti obmenu"
 	else
 		# Stretch uses PHP 7.0
 		PHPV="7.0"
-		PKGS=""
+		PKGS="volti obmenu"
 	fi
 	cat >> $ROOT/$FILE <<EOL
 # Install packages
@@ -150,12 +154,12 @@ apt install --no-install-recommends --yes \
         vim-tiny pm-utils iptables-persistent iputils-ping net-tools wget \
 	openssh-client openssh-server rsync less \
 	\
-	xserver-xorg x11-xserver-utils xinit openbox obconf obmenu slim \
+	xserver-xorg x11-xserver-utils xinit openbox obconf slim \
 	plymouth plymouth-themes compton dbus-x11 libnotify-bin xfce4-notifyd \
 	gir1.2-notify-0.7 tint2 nitrogen xfce4-appfinder xfce4-power-manager \
 	gsettings-desktop-schemas lxrandr lxmenu-data lxterminal lxappearance \
 	network-manager-gnome gtk2-engines numix-gtk-theme gtk-theme-switch \
-	fonts-lato volti pcmanfm libfm-modules gpicview mousepad x11vnc pwgen \
+	fonts-lato pcmanfm libfm-modules gpicview mousepad x11vnc pwgen \
 	xvkbd \
 	\
 	beep laptop-detect os-prober discover lshw-gtk hdparm smartmontools \
@@ -353,12 +357,12 @@ create_iso() {
 	#
 	# Create ISO image from existing live filesystem
 	#
-	if [ "$BASE" == "buster" ]; then
-		# Debian 10 supports UEFI and secure boot
-		create_uefi_iso
-	else
+	if [ "$BASE" == "stretch" ]; then
 		# Debian 9 supports legacy BIOS booting
 		create_legacy_iso
+	else
+		# Debian 10+ supports UEFI and secure boot
+		create_uefi_iso
 	fi
 }
 

@@ -1,8 +1,11 @@
 # Launch network management applet
 nm-applet &
 
-# Start volume control applet
-volti &
+# Start volume control applet (Debian 11+)
+volumeicon &
+
+# Start volume control applet (legacy)
+#volti &
 
 # Launch power manager daemon
 xfce4-power-manager &

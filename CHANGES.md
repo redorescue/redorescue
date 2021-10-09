@@ -1,5 +1,11 @@
 # Changes to Redo Rescue
 
+## Version 4.0.0 (2021-10-06)
+  * Update base to Debian 11 (bullseye) for improved hardware support
+  * Remove references to obsoleted package `obconf`
+  * Added `volumeicon-alsa` to replace obsoleted `volti`
+  * Added `xfce4-notifyd.xml` to set "Smoke" theme
+
 ## Version 3.0.2 (2020-10-24)
   * Fixed bug that prevented restoring backups for NVMe drives
   * Add prefix declaration to fix GRUB booting on affected UEFI systems
