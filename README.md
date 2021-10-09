@@ -31,7 +31,7 @@
 
 ## Features
 
-  * Over 2.1 million downloads
+  * Over 2.2 million downloads
   * Free and open source software
   * Create a backup image in a few clicks
   * Live system; works on machines that won't even boot
