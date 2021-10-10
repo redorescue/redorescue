@@ -5,6 +5,9 @@ $status = get_status();
 // Set operation type
 $status->op = 'backup';
 
+// Clear drive selection
+unset($status->drive);
+
 // Save status
 set_status($status);
 

@@ -1,5 +1,8 @@
 # Changes to Redo Rescue
 
+## Version 4.0.1 (UNRELEASED)
+  * Fix bug that prevented selecting a new disk once one is chosen
+
 ## Version 4.0.0 (2021-10-06)
   * Update base to Debian 11 (bullseye) for improved hardware support
   * Remove references to obsoleted package `obconf`
