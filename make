@@ -17,7 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-VER=4.0.0
+VER=4.0.1
 BASE=bullseye
 ARCH=amd64
 ROOT=rootdir
@@ -166,7 +166,7 @@ apt install --no-install-recommends --yes \
 	nmap time lvm2 gparted gnome-disk-utility baobab gddrescue testdisk \
 	dosfstools ntfs-3g reiserfsprogs reiser4progs hfsutils jfsutils \
 	smbclient cifs-utils nfs-common curlftpfs sshfs partclone pigz yad \
-	f2fs-tools exfat-fuse exfat-utils \
+	f2fs-tools exfat-fuse exfat-utils btrfs-progs \
 	\
 	nginx php-fpm php-cli chromium $PKGS
 
@@ -247,13 +247,17 @@ echo "Adding non-free packages..."
 perl -p -i -e 's/main$/main non-free/' /etc/apt/sources.list
 apt update --yes
 # WARNING: Wireless connections are NOT recommended for backup/restore!
+#
+# To include firmware, uncomment or add packages as needed here in the
+# make script to create a custom image.
+#
 apt install --yes \
-	firmware-linux-nonfree \
-	firmware-atheros \
-	firmware-brcm80211 \
-	firmware-iwlwifi \
-	firmware-libertas \
-	firmware-zd1211
+	firmware-linux-nonfree
+#	firmware-atheros \
+#	firmware-brcm80211 \
+#	firmware-iwlwifi \
+#	firmware-libertas \
+#	firmware-zd1211 \
 perl -p -i -e 's/ non-free$//' /etc/apt/sources.list
 apt update --yes
 EOL

@@ -2,6 +2,8 @@
 
 ## Version 4.0.1 (UNRELEASED)
   * Fix bug that prevented selecting a new disk once one is chosen
+  * Add support for mounting BTRFS filesystems
+  * Remove wireless non-free firmware packages
 
 ## Version 4.0.0 (2021-10-06)
   * Update base to Debian 11 (bullseye) for improved hardware support
