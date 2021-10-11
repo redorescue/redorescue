@@ -13,7 +13,7 @@ set_status($status);
 $disks = get_disks(TRUE);
 
 // Get partition options
-$options = get_part_options($disks, array(), '/iso9660|fat.*|ext\d|ntfs/');
+$options = get_part_options($disks, array(), '/iso9660|fat.*|ext\d|btrfs|ntfs/');
 ?>
 
 <h1>Restore</h1>
