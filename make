@@ -152,7 +152,7 @@ apt install --no-install-recommends --yes \
 	\
 	linux-image-$KERN live-boot systemd-sysv firmware-linux-free sudo \
         vim-tiny pm-utils iptables-persistent iputils-ping net-tools wget \
-	openssh-client openssh-server rsync less \
+	openssh-client openssh-server rsync zstd less \
 	\
 	xserver-xorg x11-xserver-utils xinit openbox obconf slim \
 	plymouth plymouth-themes compton dbus-x11 libnotify-bin xfce4-notifyd \
