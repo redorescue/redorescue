@@ -97,8 +97,14 @@ To build an ISO image from within Debian Linux:
 After building, it's easy to modify a file or install a package without rebuilding and downloading all the packages again:
 
   1. `sudo ./make changes`
-  1. Make your changes to the live system image
-  1. `exit` and the ISO will be updated automatically
+  2. Make your changes to the live system image
+  3. `exit` and the ISO will be updated automatically
+
+It is possible to change the mirror of the source, add extra packages, or both:
+
+  1. `sudo MIRROR=https://mirrors.tuna.tsinghua.edu.cn/debian ./make`
+  2. `sudo EXTRA_PACKAGES=fonts-noto-cjk ./make`
+  3. `sudo MIRROR=https://mirrors.tuna.tsinghua.edu.cn/debian EXTRA_PACKAGES=fonts-noto-cjk ./make`
 
 Source code for previous releases can be found on [SourceForge](https://sourceforge.net/projects/redobackup/files/src/).
 
