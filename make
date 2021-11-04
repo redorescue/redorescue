@@ -72,7 +72,7 @@ prepare() {
 		echo -e "$yel* $CACHE exists, extracting existing archive...$off"
 		sleep 2
 		tar zxvf $CACHE
-	else 
+	else
 		echo -e "$yel* $CACHE does not exist, running debootstrap...$off"
 		sleep 2
 		# Legacy needs: syslinux, syslinux-common, isolinux, memtest86+
@@ -80,8 +80,8 @@ prepare() {
 			grub-efi-amd64-signed shim-signed mtools xorriso \
 			syslinux syslinux-common isolinux memtest86+
 		rm -rf $ROOT; mkdir -p $ROOT
-		debootstrap --arch=$ARCH --variant=minbase $BASE $ROOT
-		tar zcvf $CACHE ./$ROOT	
+		debootstrap --arch=$ARCH --variant=minbase $BASE $ROOT $MIRROR
+		tar zcvf $CACHE ./$ROOT
 	fi
 
 }
@@ -167,6 +167,8 @@ apt install --no-install-recommends --yes \
 	dosfstools ntfs-3g reiserfsprogs reiser4progs hfsutils jfsutils \
 	smbclient cifs-utils nfs-common curlftpfs sshfs partclone pigz yad \
 	f2fs-tools exfat-fuse exfat-utils btrfs-progs \
+	\
+	$EXTRA_PACKAGES \
 	\
 	nginx php-fpm php-cli chromium $PKGS
 
@@ -390,7 +392,7 @@ create_legacy_iso() {
 
 	# Update version number
 	perl -p -i -e "s/\\\$VERSION/$VER/g" image/isolinux/isolinux.cfg
-	
+
 	# Prepare image
 	echo -e "$yel* Preparing legacy image...$off"
 	mkdir image/isolinux
