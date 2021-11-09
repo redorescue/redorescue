@@ -1,0 +1,4 @@
+rootdir/**
+debootstrap-*
+image/**
+*.iso
