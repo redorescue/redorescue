@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Redo Rescue: Backup and Recovery Made Easy <redorescue.com>
-# Copyright (C) 2010-2020 Zebradots Software
+# Copyright (C) 2010-2023 Zebradots Software
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-VER=4.0.1
-BASE=bullseye
+VER=5.0.0
+BASE=bookworm
 ARCH=amd64
 ROOT=rootdir
 FILE=setup.sh
@@ -132,7 +132,11 @@ script_build() {
 	else
 		KERN="amd64"
 	fi
-	if [ "$BASE" == "bullseye" ]; then
+	if [ "$BASE" == "bookworm" ]; then
+		# Bookworm-specific PHP version and packages
+		PHPV="8.2"
+		PKGS="chromium-common chromium-sandbox volumeicon-alsa"
+	elif [ "$BASE" == "bullseye" ]; then
 		# Bullseye-specific PHP version and packages
 		PHPV="7.4"
 		PKGS="chromium-common chromium-sandbox volumeicon-alsa"

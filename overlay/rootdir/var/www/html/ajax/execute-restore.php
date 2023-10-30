@@ -1,7 +1,7 @@
 <?php
 #
 # Redo Rescue: Backup and Recovery Made Easy <redorescue.com>
-# Copyright (C) 2010-2020 Zebradots Software
+# Copyright (C) 2010-2023 Zebradots Software
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -1,6 +1,6 @@
 #
 # Redo Rescue themed graphics are not licensed under GNU GPLv3.
-# Copyright (C) 2010-2020 Zebradots Software. All rights reserved.
+# Copyright (C) 2010-2023 Zebradots Software. All rights reserved.
 #
 
 title-text: ""
