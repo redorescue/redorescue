@@ -135,19 +135,19 @@ script_build() {
 	if [ "$BASE" == "bookworm" ]; then
 		# Bookworm-specific PHP version and packages
 		PHPV="8.2"
-		PKGS="chromium-common chromium-sandbox volumeicon-alsa"
+		PKGS="chromium-common chromium-sandbox volumeicon-alsa exfatprogs"
 	elif [ "$BASE" == "bullseye" ]; then
 		# Bullseye-specific PHP version and packages
 		PHPV="7.4"
-		PKGS="chromium-common chromium-sandbox volumeicon-alsa"
+		PKGS="chromium-common chromium-sandbox volumeicon-alsa curlftpfs exfat-utils"
 	elif [ "$BASE" == "buster" ]; then
 		# Buster uses PHP 7.3
 		PHPV="7.3"
-		PKGS="chromium-common chromium-sandbox volti obmenu"
+		PKGS="chromium-common chromium-sandbox volti obmenu curlftpfs exfat-utils"
 	else
 		# Stretch uses PHP 7.0
 		PHPV="7.0"
-		PKGS="volti obmenu"
+		PKGS="volti obmenu curlftpfs exfat-utils"
 	fi
 	cat >> $ROOT/$FILE <<EOL
 # Install packages
@@ -169,8 +169,8 @@ apt install --no-install-recommends --yes \
 	beep laptop-detect os-prober discover lshw-gtk hdparm smartmontools \
 	nmap time lvm2 gparted gnome-disk-utility baobab gddrescue testdisk \
 	dosfstools ntfs-3g reiserfsprogs reiser4progs hfsutils jfsutils \
-	smbclient cifs-utils nfs-common curlftpfs sshfs partclone pigz yad \
-	f2fs-tools exfat-fuse exfat-utils btrfs-progs \
+	smbclient cifs-utils nfs-common sshfs partclone pigz yad f2fs-tools \
+	exfat-fuse btrfs-progs \
 	\
 	nginx php-fpm php-cli chromium $PKGS
 
