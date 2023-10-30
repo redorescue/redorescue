@@ -42,7 +42,7 @@ $options = get_part_options($disks, $status->parts);
     <li><a href="#cifs" data-toggle="tab">Network drive</a></li>
     <li><a href="#nfs" data-toggle="tab">NFS</a></li>
     <li><a href="#ssh" data-toggle="tab">SSH</a></li>
-    <li><a href="#ftp" data-toggle="tab">FTP</a></li>
+    <li style="display: none;"><a href="#ftp" data-toggle="tab">FTP</a></li>
   </ul>
   <div id="myTabContent" class="tab-content">
 
