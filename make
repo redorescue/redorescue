@@ -80,7 +80,10 @@ prepare() {
 			grub-efi-amd64-signed shim-signed mtools xorriso \
 			syslinux syslinux-common isolinux memtest86+
 		rm -rf $ROOT; mkdir -p $ROOT
-		debootstrap --arch=$ARCH --variant=minbase $BASE $ROOT
+		debootstrap \
+			--arch=$ARCH \
+			--variant=minbase \
+			$BASE $ROOT
 		tar zcvf $CACHE ./$ROOT	
 	fi
 
@@ -247,8 +250,8 @@ script_add_nonfree() {
 	#
 	cat >> $ROOT/$FILE <<EOL
 echo "Adding non-free packages..."
-# Briefly activate non-free repo to install non-free firmware packages
-perl -p -i -e 's/main$/main non-free/' /etc/apt/sources.list
+# Briefly activate repos to install non-free firmware packages
+perl -p -i -e 's/main$/main non-free non-free-firmware/' /etc/apt/sources.list
 apt update --yes
 # WARNING: Wireless connections are NOT recommended for backup/restore!
 #
@@ -256,13 +259,12 @@ apt update --yes
 # make script to create a custom image.
 #
 apt install --yes \
-	firmware-linux-nonfree
-#	firmware-atheros \
-#	firmware-brcm80211 \
-#	firmware-iwlwifi \
-#	firmware-libertas \
-#	firmware-zd1211 \
-perl -p -i -e 's/ non-free$//' /etc/apt/sources.list
+	firmware-linux-nonfree \
+	firmware-misc-nonfree \
+	firmware-amd-graphics \
+	amd64-microcode \
+	intel-microcode
+perl -p -i -e 's/ non-free non-free-firmware$//' /etc/apt/sources.list
 apt update --yes
 EOL
 }
